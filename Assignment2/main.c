@@ -4,6 +4,9 @@
 
 /**
  * main.c
+ *    CPE 329-15
+ *    Assignment 2: Blinking LED, Clock Control, and Software Delay
+ *    Author: Celestine Co & Matthew Michilot
  */
 void main(void)
 {
