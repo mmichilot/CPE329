@@ -5,9 +5,10 @@
  *  Author: Celestine Co & Matthew Michilot
  */
 
-void set_DCO(int freq)
+#include <msp432p401r.h>
+void set_DCO(uint32_t freq)
 {
-
+    CS->KEY = CS_KEY_VAL; //unlock CS
+    CS->CTL0 = freq;
+    CS->KEY = 0; // lock CS
 }
-
-
