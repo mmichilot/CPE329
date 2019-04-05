@@ -8,7 +8,7 @@
 #ifndef DCO_SET_H_
 #define DCO_SET_H_
 
-
+void set_DCO(int freq);
 
 
 

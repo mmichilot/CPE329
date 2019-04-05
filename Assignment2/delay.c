@@ -5,6 +5,9 @@
  *  Author: Celestine Co & Matthew Michilot
  */
 
+void delay_us()
+{
 
+}
 
 
