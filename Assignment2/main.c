@@ -20,4 +20,9 @@ void main(void)
 
 	P1->DIR |= 1;       // Set Direction to Output
 
+	while (1) {
+	    P1->OUT ^= BIT0;
+	    for (i=65535;i > 0;i++);
+	}
+
 }
