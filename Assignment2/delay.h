@@ -8,8 +8,6 @@
 #ifndef DELAY_H_
 #define DELAY_H_
 
-void delay_us();
-
-
+void delay_us(u_int32 delay);
 
 #endif /* DELAY_H_ */

@@ -5,7 +5,7 @@
  *  Author: Celestine Co & Matthew Michilot
  */
 
-void delay_us()
+void delay_us(uint32_t delay)
 {
 
 }

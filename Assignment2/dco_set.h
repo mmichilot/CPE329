@@ -8,7 +8,7 @@
 #ifndef DCO_SET_H_
 #define DCO_SET_H_
 
-#define FREQ_1.5_MHz    CS_CTL0_DCORSEL_0;
+#define FREQ_1_5_MHz    CS_CTL0_DCORSEL_0;
 #define FREQ_3_MHz      CS_CTL0_DCORSEL_1;
 #define FREQ_6_MHz      CS_CTL0_DCORSEL_2;
 #define FREQ_12_MHz     CS_CTL0_DCORSEL_3;

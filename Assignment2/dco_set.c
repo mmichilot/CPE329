@@ -6,6 +6,7 @@
  */
 
 #include <msp432p401r.h>
+
 void set_DCO(uint32_t freq)
 {
     CS->KEY = CS_KEY_VAL; //unlock CS
