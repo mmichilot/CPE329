@@ -20,9 +20,16 @@ void main(void)
 	P4->SEL1 &= ~BIT3;
 	P4->DIR |= BIT3;
 
+	P2->SEL0 &= ~BIT5; // P2.5 set as GPIO
+	P2->SEL1 &= ~BIT5;
+	P2->DIR |= BIT5; // Set Direction to Output
+
 	set_DCO(freq);
 
-	while (1);
+	while (1){
+	    delay_us(10);
+	    P2->OUT ^= BIT5; // Toggle P2.5
+	}
 
 }
 
@@ -31,7 +38,7 @@ void blink_red() {
     uint16_t i = 0;
     // TURN ON RED LED
     P1->SEL0 &= ~BIT0; // P1.0 set as GPIO
-    P1->SEL1 &= ~BIT1;
+    P1->SEL1 &= ~BIT0;
 
     P1->DIR |= 1;       // Set Direction to Output
 
