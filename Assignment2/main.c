@@ -1,7 +1,3 @@
-#include "msp.h"
-#include "dco_set.h"
-#include "delay.h"
-
 /**
  * main.c
  *    CPE 329-15
@@ -9,11 +5,14 @@
  *    Author: Celestine Co & Matthew Michilot
  */
 
+#include "set_dco.h"
+#include "msp.h"
+#include "delay.h"
+
 void blink_red();
 
 void main(void)
 {
-    uint32_t freq = FREQ_1_5_MHz;
 	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
 
 	P4->SEL0 |= BIT3; // P4.3 set as MCLK
@@ -24,11 +23,11 @@ void main(void)
 	P2->SEL1 &= ~BIT5;
 	P2->DIR |= BIT5; // Set Direction to Output
 
-	set_DCO(freq);
+	set_DCO(FREQ_1_5_MHz);
 
 	while (1){
-	    delay_us(10);
 	    P2->OUT ^= BIT5; // Toggle P2.5
+	    delay_us(20);
 	}
 
 }
