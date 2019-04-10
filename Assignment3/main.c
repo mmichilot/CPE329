@@ -12,6 +12,13 @@
 void main(void)
 {
 	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
-    set_DCO(FREQ_24_MHz);
+
+    P4->SEL0 &= ~(BIT3|BIT2|BIT1|BIT0);        // P4.0-3 = Data Bus
+    P4->SEL1 &= ~(BIT3|BIT2|BIT1|BIT0);
+    P4->DIR |= BIT3|BIT2|BIT1|BIT0;            // set direction to output
+
+    P3->SEL0 &= ~(BIT3|BIT2|BIT0);         // P3.0=RW, 3.2=RS, 3.3=EN
+    P3->SEL1 &= ~(BIT3|BIT2|BIT0);
+    P3->DIR |= BIT3|BIT2|BIT0;            // set direction to output
 
 }

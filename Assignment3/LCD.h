@@ -10,9 +10,9 @@
 #ifndef LCD_H_
 #define LCD_H_
 
-#define RS BIT5
-#define RW BIT6
-#define EN BIT7
+#define RS BIT2
+#define RW BIT0
+#define EN BIT3
 #define DISP_ON 0x03
 #define CURS_ON 0x0A
 #define BLINK_ON 0x09
