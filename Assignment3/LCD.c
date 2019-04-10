@@ -38,33 +38,33 @@ void init()
     delay_us(40000);
     P3->OUT &= ~(RS|RW);        // set RS, RW low
     P3->OUT &= ~EN;             // set EN low
-    P4->OUT = 0x03              // set 1st command 4 MSB
+    P4->OUT = FUNC_SET_1        // set 1st command 4 MSB
     P3->OUT &= EN;              // set EN high
 
     // wait 37 us
     // function set: RS=0, RW=0, DB7-4=0010, DB3-0=xxxx
     // function set: RS=0, RW=0, DB7-4=NFxx, DB3-0=xxxx
-    command(37, 0x30);
+    command(37, FUNC_SET|LINE_DISP|FONT_DISP);
 
     // wait 37 us
     // function set: RS=0, RW=0, DB7-4=0010, DB3-0=xxxx
     // function set: RS=0, RW=0, DB7-4=NFxx, DB3-0=xxxx
-    command(37, 0x30);
+    command(37, FUNC_SET|LINE_DISP|FONT_DISP);
 
     // wait 37 us
     // function set: RS=0, RW=0, DB7-4=0000, DB3-0=xxxx
     // function set: RS=0, RW=0, DB7-4=1DCB, DB3-0=xxxx
-    command(37, 0x0F);
+    command(37, DISP_CTRL|DISP_ON|CURS_ON|BLINK_ON);
 
     // wait 37 us
     // disp on/off: RS=0, RW=0, DB7-4=0000, DB3-0=xxxx
     // disp on/off: RS=0, RW=0, DB7-4=0001, DB3-0=xxxx
-    command(37, 0x01);
+    command(37, DISP_CLR);
 
     // wait 1.52 ms
     // entry mode: RS=0, RW=0, DB7-4=0000, DB3-0=xxxx
     // entry mode: RS=0, RW=0, DB7-4=0111, DB3-0=xxxx
-    command(1520, 0x09);
+    command(1520, ENTRY_MODE|DIRECTION|(~SHIFT));
     delay_us(40000);
 }
 
@@ -74,13 +74,13 @@ void command(int delay, uint8_t cmd)
 
     P3->OUT &= ~(RS|RW);        // set RS, RW low
     P3->OUT &= ~EN;             // set EN low
-    P4->OUT = cmd  // set 1st command 4 MSB
+    P4->OUT = cmd>>4;           // set 1st command 4 MSB
     P3->OUT &= EN;              // set EN high
 
     check_busy_flag();
 
     P3->OUT &= ~EN;             // set EN low
-    P4->OUT = cmd<<4;           // set 2nd command 4 LSB
+    P4->OUT = cmd;              // set 2nd command 4 LSB
     P3->OUT &= EN;              // set EN high
     delay_us(0);
 

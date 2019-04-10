@@ -13,9 +13,19 @@
 #define RS BIT2
 #define RW BIT0
 #define EN BIT3
-#define DISP_ON 0x03
-#define CURS_ON 0x0A
-#define BLINK_ON 0x09
+#define FUNC_SET_1 0x03
+#define FUNC_SET 0x20
+#define LINE_DISP BIT3
+#define FONT_DISP BIT2
+#define DISP_CLR 0x01
+#define ENTRY_MODE 0x04
+#define DIRECTION BIT1
+#define SHIFT BIT0
+
+#define DISP_CTRL 0x08
+#define DISP_ON BIT3
+#define CURS_ON BIT2
+#define BLINK_ON BIT1
 
 void clear_LCD();
 void home_LCD();
