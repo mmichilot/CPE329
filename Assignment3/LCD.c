@@ -29,4 +29,7 @@ void write_string_LCD()
 
 }
 
+void init()
+{
 
+}

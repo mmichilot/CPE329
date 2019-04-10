@@ -22,4 +22,6 @@ void home_LCD();
 void write_char_LCD();
 void write_string_LCD();
 
+void init();
+
 #endif /* LCD_H_ */
