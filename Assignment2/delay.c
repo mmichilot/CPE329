@@ -11,9 +11,10 @@ void delay_us(int delay)
 {
     int i;
 
-    int adj_delay = ((int)(delay>>3) - 2); // get # of loops
+    int slope = delay>>3;
+    int adj_delay = slope*(1<<(CS->CTL0>>16)) - 4;
 
-    for (i=65535;i>65535-(adj_delay);i--);
+    for (i=65535;i>65535-adj_delay;i--);
 }
 
 
