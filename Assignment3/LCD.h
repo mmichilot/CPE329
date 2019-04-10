@@ -17,4 +17,9 @@
 #define CURS_ON 0x0A
 #define BLINK_ON 0x09
 
+void clear_LCD();
+void home_LCD();
+void write_char_LCD();
+void write_string_LCD();
+
 #endif /* LCD_H_ */

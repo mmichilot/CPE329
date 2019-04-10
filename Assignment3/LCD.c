@@ -7,6 +7,26 @@
  *  Author: Celestine Co & Matthew Michilot
  */
 
+#include "delay.h"
 
+void clear_LCD()
+{
+
+}
+
+void home_LCD()
+{
+
+}
+
+void write_char_LCD()
+{
+
+}
+
+void write_string_LCD()
+{
+
+}
 
 
