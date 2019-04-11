@@ -9,6 +9,9 @@
 
 #include "delay.h"
 #include "stdint.h"
+#include "LCD.h"
+#include "msp.h"
+
 
 void clear_LCD()
 {
@@ -38,7 +41,7 @@ void init()
     delay_us(40000);
     P3->OUT &= ~(RS|RW);        // set RS, RW low
     P3->OUT &= ~EN;             // set EN low
-    P4->OUT = FUNC_SET_1        // set 1st command 4 MSB
+    P4->OUT = FUNC_SET_1;       // set 1st command 4 MSB
     P3->OUT &= EN;              // set EN high
 
     // wait 37 us

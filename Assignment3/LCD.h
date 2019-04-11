@@ -10,6 +10,8 @@
 #ifndef LCD_H_
 #define LCD_H_
 
+#include <msp.h>
+
 #define RS BIT2
 #define RW BIT0
 #define EN BIT3
@@ -33,5 +35,7 @@ void write_char_LCD();
 void write_string_LCD();
 
 void init();
+void command(int delay, uint8_t cmd);
+void check_busy_flag();
 
 #endif /* LCD_H_ */

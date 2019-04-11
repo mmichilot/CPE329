@@ -21,4 +21,5 @@ void main(void)
     P3->SEL1 &= ~(BIT3|BIT2|BIT0);
     P3->DIR |= BIT3|BIT2|BIT0;            // set direction to output
 
+    init();
 }
