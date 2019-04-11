@@ -12,22 +12,31 @@
 
 #include <msp.h>
 
+// Control Signals
 #define RS BIT2
 #define RW BIT0
 #define EN BIT3
+
 #define FUNC_SET_1 0x03
+
+// Function Set Definitions
 #define FUNC_SET 0x20
 #define LINE_DISP BIT3
 #define FONT_DISP BIT2
+
+// Display Clear Definitions
 #define DISP_CLR 0x01
+
+// Entry Mode Set Definitions
 #define ENTRY_MODE 0x04
 #define DIRECTION BIT1
 #define SHIFT BIT0
 
+// Display On/Off Definitions
 #define DISP_CTRL 0x08
-#define DISP_ON BIT3
-#define CURS_ON BIT2
-#define BLINK_ON BIT1
+#define DISP_ON BIT2
+#define CURS_ON BIT1
+#define BLINK_ON BIT0
 
 void clear_LCD();
 void home_LCD();
