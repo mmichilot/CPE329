@@ -22,4 +22,16 @@ void main(void)
     P3->DIR |= BIT3|BIT2|BIT0;            // set direction to output
 
     init();
+    write_char_LCD(CHAR_H);
+    write_char_LCD(CHAR_E);
+    write_char_LCD(CHAR_L);
+    write_char_LCD(CHAR_L);
+    write_char_LCD(CHAR_O);
+    write_char_LCD(CHAR_SP);
+    write_char_LCD(CHAR_W);
+    write_char_LCD(CHAR_O);
+    write_char_LCD(CHAR_R);
+    write_char_LCD(CHAR_L);
+    write_char_LCD(CHAR_D);
+
 }

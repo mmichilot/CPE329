@@ -23,8 +23,16 @@ void home_LCD()
 
 }
 
-void write_char_LCD()
+void write_char_LCD(uint8_t chr)
 {
+    P3->OUT |= RS;        // set RS, RW low
+    P3->OUT &= ~EN;             // set EN low
+
+    P4->OUT = (chr)>>4;      // write 4 MSB
+    toggle_EN();
+    P4->OUT = (chr);           // write 4 LSB
+    toggle_EN();
+    delay_us(40);
 
 }
 
@@ -43,10 +51,7 @@ void init()
     P3->OUT &= ~EN;             // set EN low
 
     P4->OUT = FUNC_SET_1;       // set 1st command 4 MSB
-
-    P3->OUT |= EN;              // pulse EN
-    delay_us(0);
-    P3->OUT &= ~EN;
+    toggle_EN();
 
     delay_us(40);
 
@@ -82,17 +87,19 @@ void command(int delay, uint8_t cmd)
     P3->OUT &= ~EN;             // set EN low
 
     P4->OUT = cmd>>4;           // set 1st command 4 MSB
-    P3->OUT |= EN;              // set EN high
-    delay_us(0);
-    P3->OUT &= ~EN;             // set EN low
-
+    toggle_EN();
 
     P4->OUT = cmd;              // set 2nd command 4 LSB
+    toggle_EN();
+
+    delay_us(delay);
+}
+
+void toggle_EN()
+{
     P3->OUT |= EN;              // set EN high
     delay_us(0);
     P3->OUT &= ~EN;             // set EN low
-
-    delay_us(delay);
 }
 
 void check_busy_flag()
@@ -104,10 +111,10 @@ void check_busy_flag()
     delay_us(80);
     while((P4->IN && 0x04)>>3 == 1)
     {
-        P3->OUT &= ~EN;         // set EN low
-        delay_us(0);
         P3->OUT |= EN;          // set EN high
-        delay_us(80);
+       delay_us(0);
+       P3->OUT &= ~EN;         // set EN low
+       delay_us(80);
     }
     P4->DIR &= BIT3;            // set direction back to output
     P3->OUT |= ~RW;             // set RW low
