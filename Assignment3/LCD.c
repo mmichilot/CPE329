@@ -81,8 +81,6 @@ void command(int delay, uint8_t cmd)
     P3->OUT |= EN;              // set EN high
     delay_us(0);
 
-    check_busy_flag();
-
     P3->OUT &= ~EN;             // set EN low
     P4->OUT = cmd;              // set 2nd command 4 LSB
     P3->OUT |= EN;              // set EN high
@@ -98,7 +96,7 @@ void check_busy_flag()
     P4->DIR &= ~BIT3;           // set direction to input
     P3->OUT |= RW;              // set RW high
     delay_us(80);
-    while((P4->IN)>>3 == 1)
+    while((P4->IN && 0x04)>>3 == 1)
     {
         P3->OUT &= ~EN;         // set EN low
         delay_us(0);
