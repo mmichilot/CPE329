@@ -40,6 +40,11 @@
 #define CURS_ON BIT1
 #define BLINK_ON BIT0
 
+// LCD Lines
+#define LINE1 0x00
+#define LINE2 0x40
+#define SET_LINE 0x80
+
 void clear_LCD();
 void home_LCD();
 void write_char_LCD(uint8_t chr);
@@ -49,5 +54,6 @@ void init();
 void command(int delay, uint8_t cmd);
 void check_busy_flag();
 void toggle_EN();
+void set_line(uint8_t line);
 
 #endif /* LCD_H_ */

@@ -49,11 +49,22 @@ void write_char_LCD(uint8_t chr)
     delay_us(40);
 }
 
+void set_line(uint8_t line)
+{
+    P3->OUT &= ~(RS|RW);    // set RS, RW low
+    P3->OUT &= ~EN;         // set EN low
+
+    P4->OUT = (SET_LINE|line)>>4;
+    toggle_EN();
+    P4->OUT = (SET_LINE|line);
+    toggle_EN();
+    delay_us(40);
+}
+
 void write_string_LCD(char *str)
 {
     int i;
-    for (i = 0; i < strlen(str); i++)
-    {
+    for (i = 0; i < strlen(str); i++){
         write_char_LCD(str[i]);
     }
 }

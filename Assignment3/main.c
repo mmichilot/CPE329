@@ -11,17 +11,20 @@
 
 void main(void)
 {
-	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
+	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD; // stop watchdog timer
 
-    P4->SEL0 &= ~(BIT3|BIT2|BIT1|BIT0);        // P4.0-3 = Data Bus
+    P4->SEL0 &= ~(BIT3|BIT2|BIT1|BIT0);         // P4.0-3 = Data Bus
     P4->SEL1 &= ~(BIT3|BIT2|BIT1|BIT0);
-    P4->DIR |= BIT3|BIT2|BIT1|BIT0;            // set direction to output
+    P4->DIR |= BIT3|BIT2|BIT1|BIT0;             // set direction to output
 
-    P3->SEL0 &= ~(BIT3|BIT2|BIT0);         // P3.0=RW, 3.2=RS, 3.3=EN
+    P3->SEL0 &= ~(BIT3|BIT2|BIT0);              // P3.0=RW, 3.2=RS, 3.3=EN
     P3->SEL1 &= ~(BIT3|BIT2|BIT0);
-    P3->DIR |= BIT3|BIT2|BIT0;            // set direction to output
+    P3->DIR |= BIT3|BIT2|BIT0;                  // set direction to output
 
     init();
-    write_string_LCD("hello world");
+    set_line(LINE1);
+    write_string_LCD("Hello World");
+    set_line(LINE2);
+    write_string_LCD("Assignment 3");
     home_LCD();
 }
