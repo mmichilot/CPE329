@@ -45,15 +45,12 @@
 #define LINE2 0x40
 #define SET_LINE 0x80
 
+// LCD Functions
 void clear_LCD();
 void home_LCD();
 void write_char_LCD(uint8_t chr);
 void write_string_LCD(char *str);
-
 void init();
-void command(int delay, uint8_t cmd);
-void check_busy_flag();
-void toggle_EN();
 void set_line(uint8_t line);
 
 #endif /* LCD_H_ */

@@ -13,52 +13,45 @@
 #include "msp.h"
 #include "string.h"
 
+// LCD Helper Functions
+void command(int delay, uint8_t cmd);
+void check_busy_flag();
+void toggle_EN();
+void write_data(uint8_t data, int delay);
+
+void write_data(uint8_t data, int delay)
+{
+    P3->OUT &= ~EN;         // set EN low
+
+    P4->OUT = (data)>>4;
+    toggle_EN();
+    P4->OUT = (data);
+    toggle_EN();
+    delay_us(delay);
+}
+
 void clear_LCD()
 {
     P3->OUT &= ~(RS|RW);    // set RS, RW low
-    P3->OUT &= ~EN;         // set EN low
-
-    P4->OUT = (DISP_CLR)>>4;
-    toggle_EN();
-    P4->OUT = (DISP_CLR);
-    toggle_EN();
-    delay_us(1520);
+    write_data(DISP_CLR, 1520);
 }
 
 void home_LCD()
 {
     P3->OUT &= ~(RS|RW);    // set RS, RW low
-    P3->OUT &= ~EN;         // set EN low
-
-    P4->OUT = (HOME|BIT1)>>4;
-    toggle_EN();
-    P4->OUT = (HOME|BIT1);
-    toggle_EN();
-    delay_us(1520);
+    write_data(HOME|BIT1, 1520);
 }
 
 void write_char_LCD(uint8_t chr)
 {
     P3->OUT |= RS;          // set RS high
-    P3->OUT &= ~EN;         // set EN low
-
-    P4->OUT = (chr)>>4;     // write 4 MSB
-    toggle_EN();
-    P4->OUT = (chr);        // write 4 LSB
-    toggle_EN();
-    delay_us(40);
+    write_data(chr, 40);
 }
 
 void set_line(uint8_t line)
 {
     P3->OUT &= ~(RS|RW);    // set RS, RW low
-    P3->OUT &= ~EN;         // set EN low
-
-    P4->OUT = (SET_LINE|line)>>4;
-    toggle_EN();
-    P4->OUT = (SET_LINE|line);
-    toggle_EN();
-    delay_us(40);
+    write_data(SET_LINE|line, 40);
 }
 
 void write_string_LCD(char *str)
