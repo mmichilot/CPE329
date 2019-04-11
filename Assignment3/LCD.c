@@ -40,9 +40,9 @@ void init()
     // 4-bit interface, 2-line display, 5x8 character font
     delay_us(40000);
     P3->OUT &= ~(RS|RW);        // set RS, RW low
-    P3->OUT &= ~EN;             // set EN low
+    P3->OUT |= ~EN;             // set EN low
     P4->OUT = FUNC_SET_1;       // set 1st command 4 MSB
-    P3->OUT &= EN;              // set EN high
+    P3->OUT |= EN;              // set EN high
 
     // wait 37 us
     // function set: RS=0, RW=0, DB7-4=0010, DB3-0=xxxx
@@ -76,18 +76,18 @@ void command(int delay, uint8_t cmd)
     delay_us(delay);
 
     P3->OUT &= ~(RS|RW);        // set RS, RW low
-    P3->OUT &= ~EN;             // set EN low
+    P3->OUT |= ~EN;             // set EN low
     P4->OUT = cmd>>4;           // set 1st command 4 MSB
-    P3->OUT &= EN;              // set EN high
+    P3->OUT |= EN;              // set EN high
 
     check_busy_flag();
 
-    P3->OUT &= ~EN;             // set EN low
+    P3->OUT |= ~EN;             // set EN low
     P4->OUT = cmd;              // set 2nd command 4 LSB
-    P3->OUT &= EN;              // set EN high
+    P3->OUT |= EN;              // set EN high
     delay_us(0);
 
-    P3->OUT &= ~EN;             // set EN low
+    P3->OUT |= ~EN;             // set EN low
 }
 
 void check_busy_flag()
@@ -97,9 +97,9 @@ void check_busy_flag()
     delay_us(80);
     while((P4->IN)>>3 == 1)
     {
-        P3->OUT &= ~EN;         // set EN high
+        P3->OUT |= ~EN;         // set EN high
         delay_us(0);
-        P3->OUT &= EN;          // set EN low
+        P3->OUT |= EN;          // set EN low
         delay_us(80);
     }
     P4->DIR &= BIT3;            // set direction back to output
