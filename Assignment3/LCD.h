@@ -11,6 +11,7 @@
 #define LCD_H_
 
 #include <msp.h>
+#include <string.h>
 
 // Control Signals
 #define RS BIT2
@@ -26,6 +27,7 @@
 
 // Display Clear Definitions
 #define DISP_CLR 0x01
+#define HOME 0x02
 
 // Entry Mode Set Definitions
 #define ENTRY_MODE 0x04
@@ -41,41 +43,11 @@
 void clear_LCD();
 void home_LCD();
 void write_char_LCD(uint8_t chr);
-void write_string_LCD();
+void write_string_LCD(char *str);
 
 void init();
 void command(int delay, uint8_t cmd);
 void check_busy_flag();
 void toggle_EN();
-
-// Character Codes
-#define CHAR_A 0x41
-#define CHAR_B 0x42
-#define CHAR_C 0x43
-#define CHAR_D 0x44
-#define CHAR_E 0x45
-#define CHAR_F 0x46
-#define CHAR_G 0x47
-#define CHAR_H 0x48
-#define CHAR_I 0x49
-#define CHAR_J 0x4A
-#define CHAR_K 0x4B
-#define CHAR_L 0x4C
-#define CHAR_M 0x4D
-#define CHAR_N 0x4E
-#define CHAR_O 0x4F
-#define CHAR_P 0x50
-#define CHAR_Q 0x51
-#define CHAR_R 0x52
-#define CHAR_S 0x53
-#define CHAR_T 0x54
-#define CHAR_U 0x55
-#define CHAR_V 0x56
-#define CHAR_W 0x57
-#define CHAR_X 0x58
-#define CHAR_Y 0x59
-#define CHAR_Z 0x5A
-#define CHAR_SP 0x20
-
 
 #endif /* LCD_H_ */

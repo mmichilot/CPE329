@@ -11,40 +11,57 @@
 #include "stdint.h"
 #include "LCD.h"
 #include "msp.h"
-
+#include "string.h"
 
 void clear_LCD()
 {
+    P3->OUT &= ~(RS|RW);    // set RS, RW low
+    P3->OUT &= ~EN;         // set EN low
 
+    P4->OUT = (DISP_CLR)>>4;
+    toggle_EN();
+    P4->OUT = (DISP_CLR);
+    toggle_EN();
+    delay_us(1520);
 }
 
 void home_LCD()
 {
+    P3->OUT &= ~(RS|RW);    // set RS, RW low
+    P3->OUT &= ~EN;         // set EN low
 
+    P4->OUT = (HOME|BIT1)>>4;
+    toggle_EN();
+    P4->OUT = (HOME|BIT1);
+    toggle_EN();
+    delay_us(1520);
 }
 
 void write_char_LCD(uint8_t chr)
 {
-    P3->OUT |= RS;        // set RS, RW low
-    P3->OUT &= ~EN;             // set EN low
+    P3->OUT |= RS;          // set RS high
+    P3->OUT &= ~EN;         // set EN low
 
-    P4->OUT = (chr)>>4;      // write 4 MSB
+    P4->OUT = (chr)>>4;     // write 4 MSB
     toggle_EN();
-    P4->OUT = (chr);           // write 4 LSB
+    P4->OUT = (chr);        // write 4 LSB
     toggle_EN();
     delay_us(40);
-
 }
 
-void write_string_LCD()
+void write_string_LCD(char *str)
 {
-
+    int i;
+    for (i = 0; i < strlen(str); i++)
+    {
+        write_char_LCD(str[i]);
+    }
 }
 
 void init()
 {
     // wait 40 ms
-    // function set: RS=0, RW=0, DB7-4=0011, DB3-0=xxxx
+    // function set: RS=0, RW=0, DB=0011xxxx
     // 4-bit interface, 2-line display, 5x8 character font
     delay_us(40000);
     P3->OUT &= ~(RS|RW);        // set RS, RW low
@@ -56,28 +73,23 @@ void init()
     delay_us(40);
 
     // wait 37 us
-    // function set: RS=0, RW=0, DB7-4=0010, DB3-0=xxxx
-    // function set: RS=0, RW=0, DB7-4=NFxx, DB3-0=xxxx
+    // function set: RS=0, RW=0, DB=0010NFxx
     command(40, FUNC_SET|LINE_DISP);
 
     // wait 37 us
-    // function set: RS=0, RW=0, DB7-4=0010, DB3-0=xxxx
-    // function set: RS=0, RW=0, DB7-4=NFxx, DB3-0=xxxx
+    // function set: RS=0, RW=0, DB=0010NFxx
     command(40, FUNC_SET|LINE_DISP);
 
     // wait 37 us
-    // function set: RS=0, RW=0, DB7-4=0000, DB3-0=xxxx
-    // function set: RS=0, RW=0, DB7-4=1DCB, DB3-0=xxxx
+    // function set: RS=0, RW=0, DB=00001DCB
     command(40, DISP_CTRL|DISP_ON|CURS_ON|BLINK_ON);
 
     // wait 37 us
-    // disp on/off: RS=0, RW=0, DB7-4=0000, DB3-0=xxxx
-    // disp on/off: RS=0, RW=0, DB7-4=0001, DB3-0=xxxx
+    // disp on/off: RS=0, RW=0, DB=00000001
     command(1600, DISP_CLR);
 
     // wait 1.52 ms
-    // entry mode: RS=0, RW=0, DB7-4=0000, DB3-0=xxxx
-    // entry mode: RS=0, RW=0, DB7-4=0111, DB3-0=xxxx
+    // entry mode: RS=0, RW=0, DB=00000111
     command(40, ENTRY_MODE|DIRECTION);
 }
 
