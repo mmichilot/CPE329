@@ -20,16 +20,16 @@ uint8_t get_key()
 
     P3->OUT |= (COL1|COL2|COL3);        // check for button press
     _delay_cycles(25);
-    rows = P6->IN && (ROW1|ROW2|ROW3|ROW4);
+    rows = P6->IN & (ROW1|ROW2|ROW3|ROW4);
     if (rows == 0) {
         return 0xFF;                    // no button pressed
     }
 
     for (col = 0; col < 3; col++) {
-        P3->OUT &= ~(COL1|COL2|COL3);   // clear columns
-        P3->OUT |= (COL1 << col);       // set column high shifting each cycle
+        P5->OUT &= ~(COL1|COL2|COL3);   // clear columns
+        P5->OUT |= (COL1 << col);       // set column high shifting each cycle
         _delay_cycles(25);
-        rows = P6->IN && (ROW1|ROW2|ROW3|ROW4);
+        rows = P6->IN & (ROW1|ROW2|ROW3|ROW4);
         if (rows != 0) {
             break;                      // check if button press
         }
@@ -38,6 +38,8 @@ uint8_t get_key()
     if (col == 3) {
         return 0xFF;                    // no button press
     }
+
+    rows = rows >> 4;
 
     if (rows == 4) {
         rows = 3;
