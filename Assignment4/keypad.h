@@ -23,7 +23,6 @@
 #define COL3 BIT7
 
 // Keypad Functions
-void keypad_init();
 uint8_t get_key();
 
 #endif /* KEYPAD_H_ */

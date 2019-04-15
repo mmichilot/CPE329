@@ -27,6 +27,11 @@ void main(void)
     P3->DIR |= BIT3|BIT2|BIT0;                  // set direction to output
 
     // Keypad Setup
+    // PX->DIR |= (COL1|COL2|COL3);             // set col to outputs
+    P6->DIR &= ~(ROW1|ROW2|ROW3|ROW4);          // set rows to inputs
+    P6->REN |= (ROW1|ROW2|ROW3|ROW4);           // enable internal resistors
+    P6->OUT &= ~(ROW1|ROW2|ROW3|ROW4);          // set resistors to pull down
+    //PX->OUT &= ~(COL1|COL2|COL3);             // set columns low
 
     // LCD Program
     lcd_init();
