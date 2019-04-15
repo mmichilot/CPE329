@@ -55,6 +55,6 @@ void set_line(uint8_t line);
 void write_char(uint8_t chr);
 void write_string(char* str);
 void shift_LCD(uint8_t dir, uint8_t amt);
-void init();
+void lcd_init();
 
 #endif /* LCD_H_ */

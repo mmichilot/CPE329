@@ -47,7 +47,7 @@ void write_string(char* str) {
 
 }
 
-void init() {
+void lcd_init() {
     // wait 40 ms
     // function set: RS=0, RW=0, DB=0011xxxx
     // 4-bit interface, 2-line display, 5x8 character font
