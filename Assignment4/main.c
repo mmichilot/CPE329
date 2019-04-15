@@ -44,17 +44,17 @@ void main(void)
     set_line(LINE1);
     while(1) {
        input = get_key();
-       if (input != 0xFF) {
+       if (input != NULLCHAR) {
            write_char(charLUT[input]);
            delay_us(40000);
            delay_us(40000);
            delay_us(40000);
        }
 
-       if (get_addr() == 0x10)
+       if (get_addr() == EOL1)
            set_line(LINE2);
 
-       if (get_addr() == 0x50)
+       if (get_addr() == EOL2)
            clear_LCD();
     }
 }

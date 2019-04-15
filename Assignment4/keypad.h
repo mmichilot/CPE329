@@ -22,6 +22,10 @@
 #define COL2 BIT6
 #define COL3 BIT7
 
+#define NULLCHAR 0xFF
+#define EOL1 0x10
+#define EOL2 0x50
+
 // Keypad Functions
 uint8_t get_key();
 
