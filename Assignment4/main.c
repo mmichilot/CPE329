@@ -13,8 +13,8 @@
 #include "set_dco.h"
 #include "keypad.h"
 
-static const uint8_t charLUT[12] = {
-  '0', '1', '2', '3', '4', '5' ,'6', '7', '8', '9', '*', '#'
+static const uint8_t charLUT[13] = {
+  '0', '1', '2', '3', '4', '5' ,'6', '7', '8', '9', '*', ' ', '#'
 };
 
 void main(void)
@@ -42,14 +42,16 @@ void main(void)
     // LCD Program
     lcd_init();
     set_line(LINE1);
-    write_string("Hello World");
-    set_line(LINE2);
-
-
     while(1) {
        input = get_key();
        if (input != 0xFF) {
            write_char(charLUT[input]);
+           delay_us(40000);
+           delay_us(40000);
+           delay_us(40000);
        }
     }
+
+    // if line 1 is full
+    // set_line(LINE2);
 }

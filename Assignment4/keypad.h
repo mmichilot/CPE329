@@ -11,13 +11,13 @@
 
 #include <msp.h>
 
-// Row Signals
+// Row Signals     6.4, 6.5, 6.6, 6.7
 #define ROW1 BIT4
 #define ROW2 BIT5
 #define ROW3 BIT6
 #define ROW4 BIT7
 
-// Column Signals
+// Column Signals  5.5, 5.6, 5.7
 #define COL1 BIT5
 #define COL2 BIT6
 #define COL3 BIT7
