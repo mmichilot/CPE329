@@ -15,10 +15,10 @@ uint8_t get_key()
 {
     /* change all port 3 assignments to different port!!!! */
 
-    int col;
+    uint8_t col;
     uint8_t key, rows;
 
-    P3->OUT |= (COL1|COL2|COL3);        // check for button press
+    P5->OUT |= (COL1|COL2|COL3);        // check for button press
     _delay_cycles(25);
     rows = P6->IN & (ROW1|ROW2|ROW3|ROW4);
     if (rows == 0) {

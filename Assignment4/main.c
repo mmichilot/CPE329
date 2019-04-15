@@ -6,15 +6,21 @@
  */
 
 #include <msp.h>
+#include <stdio.h>
 
 #include "delay.h"
 #include "LCD.h"
 #include "set_dco.h"
 #include "keypad.h"
 
+static const uint8_t charLUT[12] = {
+  '0', '1', '2', '3', '4', '5' ,'6', '7', '8', '9', '*', '#'
+};
+
 void main(void)
 {
     WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD; // stop watchdog timer
+    uint8_t input;
 
     // LCD Data Bus Setup
     P4->SEL0 &= ~(BIT3|BIT2|BIT1|BIT0);         // P4.0-3 = Data Bus
@@ -38,6 +44,12 @@ void main(void)
     set_line(LINE1);
     write_string("Hello World");
     set_line(LINE2);
-    write_string("Assignment 3");
 
+
+    while(1) {
+       input = get_key();
+       if (input != 0xFF) {
+           write_char(charLUT[input]);
+       }
+    }
 }
