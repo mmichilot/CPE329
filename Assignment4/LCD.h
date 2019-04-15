@@ -56,5 +56,6 @@ void write_char(uint8_t chr);
 void write_string(char* str);
 void shift_LCD(uint8_t dir, uint8_t amt);
 void lcd_init();
+uint8_t get_addr();
 
 #endif /* LCD_H_ */

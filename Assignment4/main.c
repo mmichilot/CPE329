@@ -50,8 +50,11 @@ void main(void)
            delay_us(40000);
            delay_us(40000);
        }
-    }
 
-    // if line 1 is full
-    // set_line(LINE2);
+       if (get_addr() == 0x10)
+           set_line(LINE2);
+
+       if (get_addr() == 0x50)
+           clear_LCD();
+    }
 }

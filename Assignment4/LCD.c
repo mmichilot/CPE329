@@ -115,3 +115,30 @@ void output_data(uint8_t data) {
     P4->OUT = data;
     toggle_EN();
 }
+
+uint8_t get_addr() {
+    uint8_t upper;
+    uint8_t lower;
+    uint8_t addr;
+
+    P3->OUT &= ~RS; // set RS low
+    P3->OUT |= RW;  // set RW high
+    P3->OUT &= ~EN;
+
+    P4->DIR &= ~(BIT3|BIT2|BIT1|BIT0);     // set direction to input
+
+    P3->OUT |= EN;   // get upper 4 bits of addr
+    upper = P4->IN & (BIT2|BIT1|BIT0);
+    upper = upper << 4;
+    P3->OUT &= ~EN;
+
+    P3->OUT |= EN;    // get lower 4 bits of addr
+    lower = P4->IN & (BIT3|BIT2|BIT1|BIT0);
+    P3->OUT &= ~EN;
+
+    P4->DIR |= BIT3|BIT2|BIT1|BIT0;   // set direction to output
+
+    addr = upper | lower;
+    return addr;
+
+}
