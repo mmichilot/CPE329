@@ -134,11 +134,12 @@ uint8_t get_addr() {
 }
 
 void set_addr(uint8_t addr) {
-    command(0x80|addr, 0);
+    command(0x80|addr, 40);
 }
 
 uint8_t read_data(uint8_t addr) {
-    uint8_t data;
+//    uint8_t data;
+    uint8_t upper, lower;
 
     // Set address to read from
     set_addr(addr);
@@ -150,14 +151,17 @@ uint8_t read_data(uint8_t addr) {
     P4->DIR &= ~(BIT3|BIT2|BIT1|BIT0);     // set direction to input
 
     P3->OUT |= EN;
-    data = P4->IN & (BIT3|BIT2|BIT1|BIT0); // get upper 4 bits of addr
+//    data = P4->IN & (BIT3|BIT2|BIT1|BIT0); // get upper 4 bits of addr
+    upper = P4->IN & (BIT3|BIT2|BIT1|BIT0); // get upper 4 bits of addr
     P3->OUT &= ~EN;
 
     P3->OUT |= EN;
-    data = P4->IN & (BIT3|BIT2|BIT1|BIT0); // get lower 4 bits of addr
+//    data = P4->IN & (BIT3|BIT2|BIT1|BIT0); // get lower 4 bits of addr
+    lower = P4->IN & (BIT3|BIT2|BIT1|BIT0); // get upper 4 bits of addr
     P3->OUT &= ~EN;
 
     P4->DIR |= BIT3|BIT2|BIT1|BIT0;         // set direction to output
 
-    return 0x0F & data;
+//    return 0x0F & data;
+    return (upper << 4) | lower;
 }

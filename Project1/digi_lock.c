@@ -59,16 +59,16 @@ void locked_state() {
            pin2 = read_data(PIN2);
            pin3 = read_data(PIN3);
            pin4 = read_data(PIN4);
+
            check_pin();
            loading_screen();
            write_string("UNLOCKED");
            set_line(LINE2);
 
-           write_char(charLUT[pin1]);
-           write_char(charLUT[pin2]);
-           write_char(charLUT[pin3]);
-           write_char(charLUT[pin4]);
-
+           write_char(pin1);
+           write_char(pin2);
+           write_char(pin3);
+           write_char(pin4);
        }
     }
 
