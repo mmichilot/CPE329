@@ -20,6 +20,7 @@ digi_lock.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_comp
 digi_lock.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h
 digi_lock.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h
 digi_lock.obj: ../digi_lock.h
+digi_lock.obj: ../keypad.h
 
 ../digi_lock.c: 
 ../delay.h: 
@@ -41,3 +42,4 @@ digi_lock.obj: ../digi_lock.h
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h: 
 ../digi_lock.h: 
+../keypad.h: 

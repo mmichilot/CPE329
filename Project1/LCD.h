@@ -56,5 +56,10 @@ void write_string(char* str);
 void shift_LCD(uint8_t dir, uint8_t amt);
 void lcd_init();
 uint8_t get_addr();
+uint8_t read_data(uint8_t addr);
+
+static const uint8_t charLUT[13] = {
+  '0', '1', '2', '3', '4', '5' ,'6', '7', '8', '9', '*', ' ', '#'
+};
 
 #endif /* LCD_H_ */
