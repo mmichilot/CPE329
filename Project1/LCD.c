@@ -77,7 +77,6 @@ void lcd_init() {
 
 void command(uint8_t cmd, int delay) {
     P3->OUT &= ~(RS|RW);        // set RS, RW low
-
     P3->OUT &= ~EN;             // set EN low
 
     output_data(cmd);
@@ -88,7 +87,6 @@ void command(uint8_t cmd, int delay) {
 void write_char(uint8_t chr) {
     P3->OUT &= ~RW;         // set RW low
     P3->OUT |= RS;          // set RS high
-
     P3->OUT &= ~EN;         // set EN low
 
     output_data(chr);
