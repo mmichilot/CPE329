@@ -31,6 +31,7 @@
 #define ENTRY_MODE  0x04
 #define DIRECTION   BIT1
 #define SHIFT       BIT0
+#define READ_DDRAM 0x80
 
 // Display On/Off Definitions
 #define DISP_CTRL   0x08
