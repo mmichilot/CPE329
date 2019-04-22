@@ -26,8 +26,6 @@
 #define EOP_L 0x4E      // end of 4 digit pin in locked state
 
 // Digital Lock Functions
-void loading_screen();
-void wait();
 void check_pin();
 void locked_state();
 void unlocked_state();

@@ -13,30 +13,6 @@
 
 extern char mypin[] = "1234";
 
-void loading_screen() {
-    delay_us(40000);
-    clear_LCD();
-    write_char('.');
-    wait();
-    write_char('.');
-    wait();
-    write_char('.');
-    wait();
-}
-
-void wait() {
-    delay_us(40000);
-    delay_us(40000);
-    delay_us(40000);
-    delay_us(40000);
-    delay_us(40000);
-    delay_us(40000);
-    delay_us(40000);
-    delay_us(40000);
-    delay_us(40000);
-    delay_us(40000);
-}
-
 void locked_state() {
     uint8_t input;
 
