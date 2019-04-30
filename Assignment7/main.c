@@ -7,59 +7,44 @@
 
 #include "msp.h"
 #include "set_dco.h"
-#include <math.h>
 
-int8_t TestFunction(int8_t num);
-//int32_t TestFunction(int32_t num);
-//int64_t TestFunction(int64_t num);
-//float TestFunction(float num);
-//double TestFunction(double num);
+void main(void) {
+    int data = 2048;
+    int loByte = 0;
+    int hiByte = 0;
 
-void main(void)
-{
-    int8_t mainVar;
-//    int32_t mainVar;
-//    int64_t mainVar;
-//    float mainVar;
-//    double mainVar;
+    set_DCO(FREQ_12_MHz); // set SMCLK to 12 Mhz
 
+    EUSCI_B0->CTLW0 |= EUSCI_B_CTLW0_SWRST;    // put serial per. into reset state
 
-    set_DCO(CS_CTL0_DCORSEL_1);
+    EUSCI_B0->CTLW0 = EUSCI_B_CTLW0_CKPL   // set CLK inactive high
+                 | EUSCI_B_CTLW0_MSB    // MSB first
+                 | EUSCI_B_CTLW0_MST    // master mode
+                 | EUSCI_B_CTLW0_SYNC   // SPI is synchronous
+                 | EUSCI_B_CTLW0_UCSSEL_2   // use SMCLK
+                 | EUSCI_B_CTLW0_SWRST; // keep SPI in reset
 
-    WDTCTL = WDTPW | WDTHOLD; // Stop watchdog timer
+    EUSCI_B0->BRW = 0x01;  // run at full SMCLK speed
+    P1->SEL0 |= (BIT5|BIT6);   // configure for SMLCLK and SIMO
+    P1->SEL1 &= ~(BIT5|BIT6);  // for EUSCI_B0
+    P1->DIR |= BIT0;   // set P1.0 for CS
+    P1->OUT |= BIT0;   // initialize CS high
 
-    P1->SEL1 &= ~BIT0; //set P1.0 as simple I/O
-    P1->SEL0 &= ~BIT0;
-    P1->DIR |= BIT0; //set P1.0 as output
+    EUSCI_B0->CTLW0 &= ~EUSCI_B_CTLW0_SWRST;   // activate SPI
 
-    P2->SEL1 &= ~BIT0; //set P2.0 as simple I/O
-    P2->SEL0 &= ~BIT0;
-    P2->DIR |= BIT0; //set P2.0 as output pins
+    loByte = data & 0xFF;   // mask lower 8 bits
+    hiByte = (data >> 8) & 0x0F;    // mask upper 4 bits
+    hiByte |= (BIT4|BIT5);  // set gain and shutdown bits to 1
+    P1->OUT &= ~BIT0;   // set CS low
 
-    P2->OUT |= BIT0; // turn on Blue LED
+    while(!(EUSCI_B0->IFG & EUSCI_B_IFG_TXIFG));    // wait for TX buffer to empty
+    EUSCI_B0->TXBUF = loByte;   // send lower 8 bits
+    while(!(EUSCI_B0->IFG & EUSCI_B_IFG_TXIFG));    // wait for TX buffer to empty
+    EUSCI_B0->TXBUF = hiByte;   // send upper 8 bits;
 
-    mainVar = TestFunction(15); // test function for timing
+    while(!(EUSCI_B0->IFG & EUSCI_B_IFG_RXIFG));    // wait for transmit to finish
+    P1->OUT |= BIT0;    // set CS high
 
-    P2->OUT &= ~BIT0; // turn off Blue LED
+    while(1);
 
-    while(1) // infinite loop to do nothing
-        mainVar++; // increment mainVar to eliminate not used warning
-}
-
-int8_t TestFunction(int8_t num) {
-//int32_t TestFunction(int32_t num) {
-//int64_t TestFunction(int64_t num) {
-//float TestFunction(float num) {
-//double TestFunction(double num) {
-
-    int8_t testVar;
-//    int32_t testVar;
-//    int64_t testVar;
-//    float testVar;
-//    double testVar;
-
-    P1->OUT |= BIT0; // turn RED LED on
-//    { insert_function_here (ie testVar = num;) }
-    P1->OUT &= ~BIT0; // turn RED LED off
- return testVar;
 }
