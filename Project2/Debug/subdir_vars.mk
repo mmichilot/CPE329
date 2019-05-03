@@ -8,6 +8,7 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../func_gen.c \
+../keypad.c \
 ../main.c \
 ../set_dco.c \
 ../startup_msp432p401r_ccs.c \
@@ -15,6 +16,7 @@ C_SRCS += \
 
 C_DEPS += \
 ./func_gen.d \
+./keypad.d \
 ./main.d \
 ./set_dco.d \
 ./startup_msp432p401r_ccs.d \
@@ -22,6 +24,7 @@ C_DEPS += \
 
 OBJS += \
 ./func_gen.obj \
+./keypad.obj \
 ./main.obj \
 ./set_dco.obj \
 ./startup_msp432p401r_ccs.obj \
@@ -29,6 +32,7 @@ OBJS += \
 
 OBJS__QUOTED += \
 "func_gen.obj" \
+"keypad.obj" \
 "main.obj" \
 "set_dco.obj" \
 "startup_msp432p401r_ccs.obj" \
@@ -36,6 +40,7 @@ OBJS__QUOTED += \
 
 C_DEPS__QUOTED += \
 "func_gen.d" \
+"keypad.d" \
 "main.d" \
 "set_dco.d" \
 "startup_msp432p401r_ccs.d" \
@@ -43,6 +48,7 @@ C_DEPS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../func_gen.c" \
+"../keypad.c" \
 "../main.c" \
 "../set_dco.c" \
 "../startup_msp432p401r_ccs.c" \

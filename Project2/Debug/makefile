@@ -9,6 +9,7 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./func_gen.obj" \
+"./keypad.obj" \
 "./main.obj" \
 "./set_dco.obj" \
 "./startup_msp432p401r_ccs.obj" \
@@ -156,8 +157,8 @@ Project2.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "func_gen.obj" "main.obj" "set_dco.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" 
-	-$(RM) "func_gen.d" "main.d" "set_dco.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" 
+	-$(RM) "func_gen.obj" "keypad.obj" "main.obj" "set_dco.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" 
+	-$(RM) "func_gen.d" "keypad.d" "main.d" "set_dco.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

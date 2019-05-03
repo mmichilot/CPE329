@@ -18,6 +18,7 @@ main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_compiler.
 main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h
 main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h
 main.obj: ../set_dco.h
+main.obj: ../keypad.h
 main.obj: ../func_gen.h
 
 ../main.c: 
@@ -38,4 +39,5 @@ main.obj: ../func_gen.h
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h: 
 ../set_dco.h: 
+../keypad.h: 
 ../func_gen.h: 

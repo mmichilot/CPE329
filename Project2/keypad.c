@@ -11,6 +11,17 @@
 
 #include "keypad.h"
 
+void init_keypad() {
+
+    P5->DIR |= (COL1|COL2|COL3);             // set col to outputs 5.5, 5.6, 5.7
+    P6->DIR &= ~(ROW1|ROW2|ROW3|ROW4);       // set rows to inputs   6.4, 6.5, 6.6, 6.7
+
+    P6->REN |= (ROW1|ROW2|ROW3|ROW4);        // enable internal resistors
+
+    P6->OUT &= ~(ROW1|ROW2|ROW3|ROW4);       // set resistors to pull down
+    P5->OUT &= ~(COL1|COL2|COL3);            // set columns low
+}
+
 uint8_t get_key()
 {
     /* change all port 3 assignments to different port!!!! */
