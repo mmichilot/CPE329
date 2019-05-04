@@ -8,7 +8,7 @@
 #include "msp.h"
 #include "func_gen.h"
 
-volatile uint16_t voltage = VPP_2;
+volatile uint16_t voltage = VPP_3_3;
 
 void init_SPI(void) {
 
@@ -30,7 +30,7 @@ void init_SPI(void) {
 
     EUSCI_B0->CTLW0 &= ~EUSCI_B_CTLW0_SWRST;    // activate SPI
 
-    set_voltage(voltage);
+    set_voltage();
 
 }
 
@@ -41,33 +41,42 @@ void init_timer(void) {
                      TIMER_A_CTL_MC_2 |
                      TIMER_A_CTL_ID_1;
 
-    TIMER_A0->CCR[0] = HF_PD_100_HZ; // high time (100 Hz, 50% d.c. for now)
-    TIMER_A0->CCR[1] = HF_PD_100_HZ; // low time (100 Hz, 50% d.c. for now)
+    TIMER_A0->CCR[0] = 95;
+//    TIMER_A0->CCR[1] = 19;
 
     // enable interrupts on Timer A0
     TIMER_A0->CCTL[0] |= TIMER_A_CCTLN_CCIE;
-    TIMER_A0->CCTL[1] |= TIMER_A_CCTLN_CCIE;
+//    TIMER_A0->CCTL[1] |= TIMER_A_CCTLN_CCIE;
 
     NVIC->ISER[0] = 1 << (TA0_0_IRQn & 31);     //enable CCR0 ISR
-    NVIC->ISER[0] = 1 << (TA0_N_IRQn & 31);     // enable CCR1 ISR
+//    NVIC->ISER[0] = 1 << (TA0_N_IRQn & 31);     // enable CCR1 ISR
 }
 
 void TA0_0_IRQHandler(void) {
     TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIFG;      // clear interrupt flag
-    TIMER_A0->CCR[0] += HALF_PERIOD;                // 10 ms
-    voltage ^= VPP_2;                               // toggle voltage value
-    set_voltage(voltage);                           // set voltage
+    TIMER_A0->CCR[0] += 95;                       // 10 ms
+    voltage ^= VPP_3_3;                          // toggle voltage value
+    set_voltage();
 }
 
-void set_voltage(uint16_t val) {
+void TA0_N_IRQHandler(void) {
+    if (TIMER_A0->CCTL[1] & TIMER_A_CCTLN_CCIFG) {
+        TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CCIFG; // clear interrupt flag
+        TIMER_A0->CCR[1] += 50; // update voltage every 8 us
+        voltage += 2; // calculate new voltage
+    }
+}
+
+void set_voltage() {
     int loByte, hiByte;
 
-    loByte = val & LOWER_MASK;                      // mask lower 8 bits
-    hiByte = (val >> 8) & UPPER_MASK;               // mask upper 4 bits
+    loByte = voltage & LOWER_MASK;                      // mask lower 8 bits
+    hiByte = (voltage >> 8) & UPPER_MASK;               // mask upper 4 bits
     hiByte |= (BIT4|BIT5);                          // set gain and shutdown bits to 1
-    P1->OUT &= ~CHIP_SEL;                           // set CS low
-
     while(!(EUSCI_B0->IFG & EUSCI_B_IFG_TXIFG));    // wait for TX buffer to empty
+
+    // Beginning of transmission
+    P1->OUT &= ~CHIP_SEL;                           // set CS low
     EUSCI_B0->TXBUF = hiByte;                       // send lower 8 bits
     while(!(EUSCI_B0->IFG & EUSCI_B_IFG_TXIFG));    // wait for TX buffer to empty
     EUSCI_B0->TXBUF = loByte;                       // send upper 8 bits;

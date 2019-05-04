@@ -16,7 +16,7 @@
 #define HALF_PERIOD HF_PD_50_HZ
 
 #define VPP_2 2482      // 2 V
-#define VPP_3_3 4096    // 3.3 V
+#define VPP_3_3 4095   // 3.3 V
 
 #define HF_PD_50_HZ 60000
 #define HF_PD_100_HZ 30000
@@ -34,7 +34,7 @@
 
 void init_SPI(void);
 void init_timer(void);
-void set_voltage(uint16_t val);
+void set_voltage();
 void TA0_0_IRQHandler(void);
 
 #endif /* FUNC_GEN_H_ */
