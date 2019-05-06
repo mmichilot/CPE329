@@ -37,7 +37,7 @@ void init_timer(void) {
     //setup Timer A0 to use SMCLK, continuous mode, and divide by 2
     TIMER_A0->CTL |= TIMER_A_CTL_TASSEL_2 |
                      TIMER_A_CTL_MC_2 |
-                     TIMER_A_CTL_ID_1;
+                     TIMER_A_CTL_ID_2;
 
     // enable interrupts on Timer A0
     TIMER_A0->CCTL[0] |= TIMER_A_CCTLN_CCIE;

@@ -10,6 +10,8 @@
 
 #include "func_gen_states.h"
 
-void gen_wave(waveform_state_type wave, int freq, int duty);
+void saw_wave(int freq);
+void set_voltage(int voltage);
+void square_wave(int freq, int duty);
 
 #endif /* GEN_WAVE_H_ */

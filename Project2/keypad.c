@@ -29,7 +29,7 @@ uint8_t get_key()
     uint8_t key, rows;
 
     P5->OUT |= (COL1|COL2|COL3);        // check for button press
-    _delay_cycles(25);
+    _delay_cycles(50);
     rows = P6->IN & (ROW1|ROW2|ROW3|ROW4);
     if (rows == 0) {
         return 0xFF;                    // no button pressed

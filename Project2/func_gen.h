@@ -34,7 +34,5 @@
 
 void init_SPI(void);
 void init_timer(void);
-void set_voltage();
-void TA0_0_IRQHandler(void);
 
 #endif /* FUNC_GEN_H_ */

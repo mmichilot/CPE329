@@ -29,6 +29,7 @@ typedef enum {
 typedef enum {
     idle,
     change_waveform,
+    change_freq,
     duty_cycle_incr,
     duty_cycle_decr,
     duty_cycle_reset
@@ -56,19 +57,16 @@ typedef enum {
 #define LCD_FR_300 "300 HZ"
 #define LCD_FR_400 "400 HZ"
 #define LCD_FR_500 "500 HZ"
-#define LCD_DC_10 "10% DUTY CYCLE"
-#define LCD_DC_20 "20% DUTY CYCLE"
-#define LCD_DC_30 "30% DUTY CYCLE"
-#define LCD_DC_40 "40% DUTY CYCLE"
-#define LCD_DC_50 "50% DUTY CYCLE"
-#define LCD_DC_60 "60% DUTY CYCLE"
-#define LCD_DC_70 "70% DUTY CYCLE"
-#define LCD_DC_80 "80% DUTY CYCLE"
-#define LCD_DC_90 "90% DUTY CYCLE"
+#define LCD_DC "% DUTY CYCLE"
 
 void update_display(void);
 void func_gen_fsm(void);
 void selection_ISR(uint8_t input);
 void write_frequency(void);
+void update_fsm(void);
+
+static char *dutycycleLUT[10] = {
+  "", "10", "20", "30", "40", "50", "60", "70", "80", "90"
+};
 
 #endif /* FUNC_GEN_STATES_H_ */

@@ -26,7 +26,7 @@ void main(void) {
 
     __enable_irq();     // enable global interrupts
 
-    update_display();
+    update_fsm();
     func_gen_fsm();
 
 }
