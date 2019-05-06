@@ -20,6 +20,9 @@ main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h
 main.obj: ../set_dco.h
 main.obj: ../keypad.h
 main.obj: ../func_gen.h
+main.obj: ../func_gen_states.h
+main.obj: ../delay.h
+main.obj: ../LCD.h
 
 ../main.c: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/msp.h: 
@@ -41,3 +44,6 @@ main.obj: ../func_gen.h
 ../set_dco.h: 
 ../keypad.h: 
 ../func_gen.h: 
+../func_gen_states.h: 
+../delay.h: 
+../LCD.h: 

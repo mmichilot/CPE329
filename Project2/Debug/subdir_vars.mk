@@ -7,7 +7,10 @@ CMD_SRCS += \
 ../msp432p401r.cmd 
 
 C_SRCS += \
+../LCD.c \
+../delay.c \
 ../func_gen.c \
+../func_gen_states.c \
 ../keypad.c \
 ../main.c \
 ../set_dco.c \
@@ -15,7 +18,10 @@ C_SRCS += \
 ../system_msp432p401r.c 
 
 C_DEPS += \
+./LCD.d \
+./delay.d \
 ./func_gen.d \
+./func_gen_states.d \
 ./keypad.d \
 ./main.d \
 ./set_dco.d \
@@ -23,7 +29,10 @@ C_DEPS += \
 ./system_msp432p401r.d 
 
 OBJS += \
+./LCD.obj \
+./delay.obj \
 ./func_gen.obj \
+./func_gen_states.obj \
 ./keypad.obj \
 ./main.obj \
 ./set_dco.obj \
@@ -31,7 +40,10 @@ OBJS += \
 ./system_msp432p401r.obj 
 
 OBJS__QUOTED += \
+"LCD.obj" \
+"delay.obj" \
 "func_gen.obj" \
+"func_gen_states.obj" \
 "keypad.obj" \
 "main.obj" \
 "set_dco.obj" \
@@ -39,7 +51,10 @@ OBJS__QUOTED += \
 "system_msp432p401r.obj" 
 
 C_DEPS__QUOTED += \
+"LCD.d" \
+"delay.d" \
 "func_gen.d" \
+"func_gen_states.d" \
 "keypad.d" \
 "main.d" \
 "set_dco.d" \
@@ -47,7 +62,10 @@ C_DEPS__QUOTED += \
 "system_msp432p401r.d" 
 
 C_SRCS__QUOTED += \
+"../LCD.c" \
+"../delay.c" \
 "../func_gen.c" \
+"../func_gen_states.c" \
 "../keypad.c" \
 "../main.c" \
 "../set_dco.c" \

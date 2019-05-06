@@ -1,1 +1,1 @@
-"./func_gen.obj" "./keypad.obj" "./main.obj" "./set_dco.obj" "./startup_msp432p401r_ccs.obj" "./system_msp432p401r.obj" "../msp432p401r.cmd" -llibc.a 
+"./LCD.obj" "./delay.obj" "./func_gen.obj" "./func_gen_states.obj" "./keypad.obj" "./main.obj" "./set_dco.obj" "./startup_msp432p401r_ccs.obj" "./system_msp432p401r.obj" "../msp432p401r.cmd" -llibc.a 
