@@ -8,6 +8,7 @@
 #include <msp.h>
 #include "gen_wave.h"
 #include "func_gen.h"
+#include "func_gen_states.h"
 
 volatile int volt_rate = 0;
 volatile int voltage = 0;
@@ -17,18 +18,18 @@ void saw_wave(int freq);
 void set_voltage(int voltage);
 void square_wave(int freq, int duty);
 
-void gen_wave(wave_type wave, int freq, int duty) {
+void gen_wave(waveform_state_type wave, int freq, int duty) {
 
     __disable_irq();    // temporarily disable global interrupts
 
     switch (wave) {
-        case SQUARE:
+        case SQUARE_WAVE:
             square_wave(freq, duty);
             break;
-        case SAWTOOTH:
+        case SAWTOOTH_WAVE:
             saw_wave(freq);
             break;
-        case SINE:
+        case SINE_WAVE:
 //            sine_wave(freq);
             break;
     }

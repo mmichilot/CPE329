@@ -10,13 +10,15 @@
 #include "keypad.h"
 #include "LCD.h"
 #include "delay.h"
+#include "gen_wave.h"
 
 waveform_state_type current_wf_state = SQUARE_WAVE;
 waveform_state_type next_wf_state;
 square_state_type current_sq_state = SQ_50;
 event_type current_event;
 
-uint32_t current_freq = 100;
+int current_freq = 100;
+int current_duty = 50;
 
 void func_gen_fsm(void) {
     uint8_t input;
@@ -33,6 +35,8 @@ void func_gen_fsm(void) {
         if (current_event == change_waveform)
             current_wf_state = next_wf_state;
 
+        if (current_event != idle) {
+
         switch(current_wf_state) {
 
         case SINE_WAVE:
@@ -46,6 +50,7 @@ void func_gen_fsm(void) {
         case SQUARE_WAVE:
             switch (current_sq_state) {
             case SQ_50:
+                current_duty = 50;
                 if (current_event == duty_cycle_incr)
                     current_sq_state = SQ_60;
                 else if (current_event == duty_cycle_decr)
@@ -53,6 +58,7 @@ void func_gen_fsm(void) {
                 break;
 
             case SQ_60:
+                current_duty = 60;
                 if (current_event == duty_cycle_reset || current_event == duty_cycle_decr)
                     current_sq_state = SQ_50;
                 else if (current_event == duty_cycle_incr)
@@ -60,6 +66,7 @@ void func_gen_fsm(void) {
                 break;
 
             case SQ_70:
+                current_duty = 70;
                 if (current_event == duty_cycle_reset)
                     current_sq_state = SQ_50;
                 else if (current_event == duty_cycle_incr)
@@ -69,6 +76,7 @@ void func_gen_fsm(void) {
                 break;
 
             case SQ_80:
+                current_duty = 80;
                 if (current_event == duty_cycle_reset)
                     current_sq_state = SQ_50;
                 else if (current_event == duty_cycle_incr)
@@ -78,6 +86,7 @@ void func_gen_fsm(void) {
                 break;
 
             case SQ_90:
+                current_duty = 90;
                 if (current_event == duty_cycle_reset)
                     current_sq_state = SQ_50;
                 else if (current_event == duty_cycle_decr)
@@ -85,6 +94,7 @@ void func_gen_fsm(void) {
                 break;
 
             case SQ_10:
+                current_duty = 10;
                 if (current_event == duty_cycle_reset)
                     current_sq_state = SQ_50;
                 else if (current_event == duty_cycle_incr)
@@ -94,6 +104,7 @@ void func_gen_fsm(void) {
                 break;
 
             case SQ_20:
+                current_duty = 20;
                 if (current_event == duty_cycle_reset)
                     current_sq_state = SQ_50;
                 else if (current_event == duty_cycle_incr)
@@ -103,6 +114,7 @@ void func_gen_fsm(void) {
                 break;
 
             case SQ_30:
+                current_duty = 30;
                 if (current_event == duty_cycle_reset)
                     current_sq_state = SQ_50;
                 else if (current_event == duty_cycle_incr)
@@ -112,6 +124,7 @@ void func_gen_fsm(void) {
                 break;
 
             case SQ_40:
+                current_duty = 40;
                 if (current_event == duty_cycle_reset || current_event == duty_cycle_incr)
                      current_sq_state = SQ_50;
                 else if (current_event == duty_cycle_decr)
@@ -126,6 +139,11 @@ void func_gen_fsm(void) {
             default:
                 current_wf_state = SQUARE_WAVE;
                 break;
+        }
+
+        gen_wave(current_wf_state, current_freq, current_duty);
+
+
         }
 
     }

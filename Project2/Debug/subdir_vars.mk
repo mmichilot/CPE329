@@ -11,6 +11,7 @@ C_SRCS += \
 ../delay.c \
 ../func_gen.c \
 ../func_gen_states.c \
+../gen_wave.c \
 ../keypad.c \
 ../main.c \
 ../set_dco.c \
@@ -22,6 +23,7 @@ C_DEPS += \
 ./delay.d \
 ./func_gen.d \
 ./func_gen_states.d \
+./gen_wave.d \
 ./keypad.d \
 ./main.d \
 ./set_dco.d \
@@ -33,6 +35,7 @@ OBJS += \
 ./delay.obj \
 ./func_gen.obj \
 ./func_gen_states.obj \
+./gen_wave.obj \
 ./keypad.obj \
 ./main.obj \
 ./set_dco.obj \
@@ -44,6 +47,7 @@ OBJS__QUOTED += \
 "delay.obj" \
 "func_gen.obj" \
 "func_gen_states.obj" \
+"gen_wave.obj" \
 "keypad.obj" \
 "main.obj" \
 "set_dco.obj" \
@@ -55,6 +59,7 @@ C_DEPS__QUOTED += \
 "delay.d" \
 "func_gen.d" \
 "func_gen_states.d" \
+"gen_wave.d" \
 "keypad.d" \
 "main.d" \
 "set_dco.d" \
@@ -66,6 +71,7 @@ C_SRCS__QUOTED += \
 "../delay.c" \
 "../func_gen.c" \
 "../func_gen_states.c" \
+"../gen_wave.c" \
 "../keypad.c" \
 "../main.c" \
 "../set_dco.c" \

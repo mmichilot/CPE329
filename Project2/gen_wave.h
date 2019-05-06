@@ -8,13 +8,8 @@
 #ifndef GEN_WAVE_H_
 #define GEN_WAVE_H_
 
+#include "func_gen_states.h"
 
-typedef enum {
-    SQUARE,
-    SINE,
-    SAWTOOTH
-} wave_type;
-
-void gen_wave(wave_type wave, int freq, int duty);
+void gen_wave(waveform_state_type wave, int freq, int duty);
 
 #endif /* GEN_WAVE_H_ */
