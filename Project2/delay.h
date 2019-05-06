@@ -1,8 +1,8 @@
 /*
  * delay.h
- *
- *  Created on: Apr 5, 2019
- *  Author: Celestine Co & Matthew Michilot
+ *    CPE 329-15
+ *    Project 2: Function Generator
+ *    Author: Celestine Co & Matthew Michilot
  */
 
 #ifndef DELAY_H_

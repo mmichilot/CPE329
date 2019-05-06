@@ -1,8 +1,7 @@
 /*
  * keypad.c
- *
  *    CPE 329-15
- *    Project 1: Digital Lock
+ *    Project 2: Function Generator
  *    Author: Celestine Co & Matthew Michilot
  */
 

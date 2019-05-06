@@ -18,11 +18,7 @@ main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_compiler.
 main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h
 main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h
 main.obj: ../set_dco.h
-main.obj: /Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/math.h
-main.obj: /Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_ti_config.h
-main.obj: /Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/linkage.h
-main.obj: /Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_defs.h
-main.obj: /Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_limits.h
+main.obj: ../delay.h
 
 ../main.c: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/msp.h: 
@@ -42,8 +38,4 @@ main.obj: /Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/incl
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h: 
 ../set_dco.h: 
-/Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/math.h: 
-/Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_ti_config.h: 
-/Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/linkage.h: 
-/Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_defs.h: 
-/Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_limits.h: 
+../delay.h: 

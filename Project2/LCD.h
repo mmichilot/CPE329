@@ -1,8 +1,7 @@
 /*
  * LCD.h
- *
  *    CPE 329-15
- *    Project 1: Digital Lock
+ *    Project 2: Function Generator
  *    Author: Celestine Co & Matthew Michilot
  */
 
@@ -55,7 +54,7 @@ void set_line(uint8_t line);
 void write_char(uint8_t chr);
 void write_string(char* str);
 void shift_LCD(uint8_t dir, uint8_t amt);
-void lcd_init();
+void init_lcd();
 uint8_t get_addr();
 uint8_t read_data(uint8_t addr);
 

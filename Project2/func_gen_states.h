@@ -28,9 +28,7 @@ typedef enum {
 
 typedef enum {
     idle,
-    change_to_square,
-    change_to_sine,
-    change_to_sawtooth,
+    change_waveform,
     duty_cycle_incr,
     duty_cycle_decr,
     duty_cycle_reset
@@ -51,7 +49,7 @@ typedef enum {
 
 // LCD Display Macros
 #define LCD_SQ_WV "SQUARE "
-#define LCD_SIN_WV "SINUSOIDAL "
+#define LCD_SIN_WV "SINE "
 #define LCD_ST_WV "SAWTOOTH "
 #define LCD_FR_100 "100 HZ"
 #define LCD_FR_200 "200 HZ"
@@ -68,8 +66,9 @@ typedef enum {
 #define LCD_DC_80 "80% DUTY CYCLE"
 #define LCD_DC_90 "90% DUTY CYCLE"
 
-void display(void);
+void update_display(void);
 void func_gen_fsm(void);
 void selection_ISR(uint8_t input);
+void write_frequency(void);
 
 #endif /* FUNC_GEN_STATES_H_ */

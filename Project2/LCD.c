@@ -1,8 +1,7 @@
 /*
  * LCD.c
- *
  *    CPE 329-15
- *    Project 1: Digital Lock
+ *    Project 2: Function Generator
  *    Author: Celestine Co & Matthew Michilot
  */
 
@@ -44,10 +43,19 @@ void write_string(char* str) {
     int i;
     for (i = 0; i < strlen(str); i++)
         write_char(str[i]);
-
 }
 
-void lcd_init() {
+void init_lcd() {
+    // LCD Data Bus Setup
+    P4->SEL0 &= ~(BIT3|BIT2|BIT1|BIT0);         // P4.0-3 = Data Bus
+    P4->SEL1 &= ~(BIT3|BIT2|BIT1|BIT0);
+    P4->DIR |= BIT3|BIT2|BIT1|BIT0;             // set direction to output
+
+    // LCD Control Signal Setup
+    P3->SEL0 &= ~(BIT3|BIT2|BIT0);              // P3.0=RW, 3.2=RS, 3.3=EN
+    P3->SEL1 &= ~(BIT3|BIT2|BIT0);
+    P3->DIR |= BIT3|BIT2|BIT0;                  // set direction to output
+
     // function set: RS=0, RW=0, DB=0011xxxx
     // 4-bit interface, 2-line display, 5x8 character font
     delay_us(40000);            // wait 40 ms
