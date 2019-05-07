@@ -5,15 +5,14 @@
  *    Author: Celestine Co & Matthew Michilot
  */
 
+#include <dac.h>
 #include "msp.h"
 #include "set_dco.h"
 #include "keypad.h"
-#include "func_gen.h"
 #include "func_gen_states.h"
 #include "delay.h"
 #include "LCD.h"
-
-void init_keypad();
+#include "gen_wave.h"
 
 void main(void) {
 
@@ -23,8 +22,7 @@ void main(void) {
     init_timer();
     init_SPI();         // initialize the SPI bus 1.0 CS, 1.5 SPI_CLK, 1.6 SIMO
     init_lcd();
-
-    __enable_irq();     // enable global interrupts
+    init_sine();
 
     update_fsm();
     func_gen_fsm();

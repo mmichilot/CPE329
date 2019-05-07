@@ -48,7 +48,7 @@ void update_fsm(void) {
 
     switch(current_wf_state) {
     case SINE_WAVE:
-        // sine wave stuff
+        sine_wave(current_freq);
         break;
 
     case SAWTOOTH_WAVE:

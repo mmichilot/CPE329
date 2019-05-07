@@ -5,8 +5,8 @@
  *    Author: Celestine Co & Matthew Michilot
  */
 
-#ifndef FUNC_GEN_H_
-#define FUNC_GEN_H_
+#ifndef DAC_H_
+#define DAC_H_
 
 #define CHIP_SEL BIT0
 #define DIV_1 0x01
@@ -34,5 +34,6 @@
 
 void init_SPI(void);
 void init_timer(void);
+void set_voltage(int voltage);
 
-#endif /* FUNC_GEN_H_ */
+#endif /* DAC_H_ */

@@ -5,8 +5,8 @@
  *    Author: Celestine Co & Matthew Michilot
  */
 
+#include <dac.h>
 #include "msp.h"
-#include "func_gen.h"
 
 void init_SPI(void) {
 
@@ -28,8 +28,6 @@ void init_SPI(void) {
 
     EUSCI_B0->CTLW0 &= ~EUSCI_B_CTLW0_SWRST;    // activate SPI
 
-    set_voltage();
-
 }
 
 void init_timer(void) {
@@ -39,22 +37,27 @@ void init_timer(void) {
                      TIMER_A_CTL_MC_2 |
                      TIMER_A_CTL_ID_2;
 
-    // enable interrupts on Timer A0
-    TIMER_A0->CCTL[0] |= TIMER_A_CCTLN_CCIE;
-    TIMER_A0->CCTL[1] |= TIMER_A_CCTLN_CCIE;
+    TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIE;    // enable CCR0 interrupt
+    TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CCIE;   // enable CCR1 interrupt
+    TIMER_A0->CCTL[2] &= ~TIMER_A_CCTLN_CCIE;
 
     NVIC->ISER[0] = 1 << (TA0_0_IRQn & 31);     //enable CCR0 ISR
-    NVIC->ISER[0] = 1 << (TA0_N_IRQn & 31);     // enable CCR1 ISR
+    NVIC->ISER[0] = 1 << (TA0_N_IRQn & 31);     // enable CCR1 and CCR2 ISR
 }
 
+void set_voltage(int voltage) {
+    int loByte, hiByte;
 
-void incr_duty_cycle(void) {
-    TIMER_A0->CCR[0] += DC_100HZ; // high time increased by 10%
-    TIMER_A0->CCR[1] -= DC_100HZ; // low time decreased by 10%
+    loByte = voltage & LOWER_MASK;                      // mask lower 8 bits
+    hiByte = (voltage >> 8) & UPPER_MASK;               // mask upper 4 bits
+    hiByte |= (BIT4|BIT5);                          // set gain and shutdown bits to 1
+    while(!(EUSCI_B0->IFG & EUSCI_B_IFG_TXIFG));    // wait for TX buffer to empty
+
+    // Beginning of transmission
+    P1->OUT &= ~CHIP_SEL;                           // set CS low
+    EUSCI_B0->TXBUF = hiByte;                       // send lower 8 bits
+    while(!(EUSCI_B0->IFG & EUSCI_B_IFG_TXIFG));    // wait for TX buffer to empty
+    EUSCI_B0->TXBUF = loByte;                       // send upper 8 bits;
+    while(!(EUSCI_B0->IFG & EUSCI_B_IFG_RXIFG));    // wait for transmit to finish
+    P1->OUT |= CHIP_SEL;                            // set CS high
 }
-
-void decr_duty_cycle(void) {
-    TIMER_A0->CCR[0] -= DC_100HZ; // high time decreased by 10%
-    TIMER_A0->CCR[1] += DC_100HZ; // low time increased by 10%
-}
-

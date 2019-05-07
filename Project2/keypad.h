@@ -27,5 +27,6 @@
 
 // Keypad Functions
 uint8_t get_key();
+void init_keypad();
 
 #endif /* KEYPAD_H_ */
