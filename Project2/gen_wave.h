@@ -13,5 +13,7 @@
 void saw_wave(int freq);
 void set_voltage(int voltage);
 void square_wave(int freq, int duty);
+void sine_wave(int freq);
+void init_sine();
 
 #endif /* GEN_WAVE_H_ */
