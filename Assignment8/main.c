@@ -31,5 +31,9 @@ void main(void)
 
 	EUSCI_A0->CTLW0 &= ~EUSCI_A_CTLW0_SWRST;        // enable serial device
 
+	while(1){
+	    while(!(EUSCI_A0->IFG & EUSCI_A_IFG_TXIFG));    // wait for TX buffer to empty
+	    EUSCI_A0->TXBUF = 'h';
+	}
 
 }
