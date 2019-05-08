@@ -7,14 +7,26 @@
 
 #include "msp.h"
 #include "string.h"
+#include "stdlib.h"
 #include "dac.h"
+#include "set_dco.h"
 
 void print_char(char letter);
 void print_string(char* string);
 
+int flag = 0;
+char inValue[5];
+int index = 0;
+
 void main(void)
 {
+    int voltage = 0;
+
 	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
+
+	set_DCO(FREQ_3_MHz);
+
+	init_SPI();
 
 	// initialize serial device
 	EUSCI_A0->CTLW0 |= EUSCI_A_CTLW0_SWRST;         // put serial device into reset state
@@ -29,6 +41,8 @@ void main(void)
 	EUSCI_A0->MCTLW = (10 << EUSCI_A_MCTLW_BRF_OFS)
 	                | EUSCI_A_MCTLW_OS16;   // from calculations
 
+    EUSCI_A0->CTLW0 &= ~EUSCI_A_CTLW0_SWRST;        // enable serial device
+
 	// setup UART interrupts
 	EUSCI_A0->IE |= EUSCI_A_IE_RXIE;            // enable receive interrupt
 	NVIC->ISER[0] = 1 << (EUSCIA0_IRQn & 31);   // enable interrupt in NVIC
@@ -37,13 +51,19 @@ void main(void)
 	P1->SEL0 |= (BIT2|BIT3);
 	P1->SEL1 &= ~(BIT2|BIT3);   // TX and RX pins
 
-	EUSCI_A0->CTLW0 &= ~EUSCI_A_CTLW0_SWRST;        // enable serial device
-
 	__enable_irq();
 
-	print_string("What is your name?\n");
-
-	while(1);
+	while(1) {
+	    if (flag) {
+	        print_string(inValue);
+	        voltage = atoi(inValue);
+	        if (voltage < 4096 && voltage >= 0)
+	            set_voltage(voltage);
+	        flag = 0;
+	        index = 0;
+	        voltage = 0;
+	    }
+	}
 }
 
 void print_char(char letter) {
@@ -59,6 +79,24 @@ void print_string(char* string) {
 }
 
 void EUSCIA0_IRQHandler(void) {
-    char letter = EUSCI_A0->RXBUF;
-    print_char(letter);
+    char letter;
+    if (EUSCI_A0->IFG & EUSCI_A_IFG_RXIFG) {
+        // get user input
+        letter = EUSCI_A0->RXBUF;   // transmit character
+
+        // echo user input
+        while(!(EUSCI_A0->IFG & EUSCI_A_IFG_TXIFG));    //wait for TX buffer to empty
+        EUSCI_A0->TXBUF = letter;   // transmit character
+
+        // parse user input
+        if (letter >= '0' && letter <= '9' && index < 4) {
+            inValue[index] = letter;
+            index++;
+        }
+
+        if (letter == 0xD) {
+            inValue[index] = '\0';
+            flag = 1;
+        }
+    }
 }

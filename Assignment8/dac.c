@@ -30,21 +30,6 @@ void init_SPI(void) {
 
 }
 
-void init_timer(void) {
-
-    //setup Timer A0 to use SMCLK, continuous mode, and divide by 2
-    TIMER_A0->CTL |= TIMER_A_CTL_TASSEL_2 |
-                     TIMER_A_CTL_MC_2 |
-                     TIMER_A_CTL_ID_2;
-
-    TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIE;    // enable CCR0 interrupt
-    TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CCIE;   // enable CCR1 interrupt
-    TIMER_A0->CCTL[2] &= ~TIMER_A_CCTLN_CCIE;
-
-    NVIC->ISER[0] = 1 << (TA0_0_IRQn & 31);     //enable CCR0 ISR
-    NVIC->ISER[0] = 1 << (TA0_N_IRQn & 31);     // enable CCR1 and CCR2 ISR
-}
-
 void set_voltage(int voltage) {
     int loByte, hiByte;
 

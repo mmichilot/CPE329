@@ -33,7 +33,6 @@
 #define DC_500HZ 1200
 
 void init_SPI(void);
-void init_timer(void);
 void set_voltage(int voltage);
 
 #endif /* DAC_H_ */
