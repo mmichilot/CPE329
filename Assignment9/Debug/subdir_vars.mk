@@ -11,41 +11,47 @@ C_SRCS += \
 ../main.c \
 ../set_dco.c \
 ../startup_msp432p401r_ccs.c \
-../system_msp432p401r.c 
+../system_msp432p401r.c \
+../uart.c 
 
 C_DEPS += \
 ./adc.d \
 ./main.d \
 ./set_dco.d \
 ./startup_msp432p401r_ccs.d \
-./system_msp432p401r.d 
+./system_msp432p401r.d \
+./uart.d 
 
 OBJS += \
 ./adc.obj \
 ./main.obj \
 ./set_dco.obj \
 ./startup_msp432p401r_ccs.obj \
-./system_msp432p401r.obj 
+./system_msp432p401r.obj \
+./uart.obj 
 
 OBJS__QUOTED += \
 "adc.obj" \
 "main.obj" \
 "set_dco.obj" \
 "startup_msp432p401r_ccs.obj" \
-"system_msp432p401r.obj" 
+"system_msp432p401r.obj" \
+"uart.obj" 
 
 C_DEPS__QUOTED += \
 "adc.d" \
 "main.d" \
 "set_dco.d" \
 "startup_msp432p401r_ccs.d" \
-"system_msp432p401r.d" 
+"system_msp432p401r.d" \
+"uart.d" 
 
 C_SRCS__QUOTED += \
 "../adc.c" \
 "../main.c" \
 "../set_dco.c" \
 "../startup_msp432p401r_ccs.c" \
-"../system_msp432p401r.c" 
+"../system_msp432p401r.c" \
+"../uart.c" 
 
 

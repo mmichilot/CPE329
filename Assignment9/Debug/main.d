@@ -19,6 +19,7 @@ main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h
 main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h
 main.obj: ../set_dco.h
 main.obj: ../adc.h
+main.obj: ../uart.h
 
 ../main.c: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/msp.h: 
@@ -39,3 +40,4 @@ main.obj: ../adc.h
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h: 
 ../set_dco.h: 
 ../adc.h: 
+../uart.h: 

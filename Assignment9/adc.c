@@ -10,7 +10,9 @@
 void init_ADC(void) {
     // initialize ADC
     ADC14->CTL0 &= ~ADC14_CTL0_ENC; // disable ADC for configuration
+
     ADC14->CTL0 = ADC14_CTL0_SHP    // sample pulse, use internal timer
+                | ADC14_CTL0_SHT0_2 // 16 clocks per sample
                 | ADC14_CTL0_SSEL_3 // select MCLK
                 | ADC14_CTL0_ON;    // turn on ADC14
 
@@ -24,9 +26,9 @@ void init_ADC(void) {
     P6->SEL0 |= BIT1;
     P6->SEL1 |= BIT1;
 
-    ADC14->CTL0 |= ADC14_CTL0_ENC;  // enable ADC
+    ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;  // enable ADC and sampling
 
     // setup conversion interrupts
     ADC14->IER0 |= ADC14_IER0_IE2;          // enable interrupts on mem[2]
-    NVIC->ISER[0] = (1 << ADC14_IRQn & 31); // enable ADC ISR in NVIC
+    NVIC->ISER[0] = 1 << (ADC14_IRQn & 31); // enable ADC ISR in NVIC
 }
