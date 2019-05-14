@@ -6,6 +6,10 @@
  */
 
 #include "msp.h"
+#include "uart.h"
+
+volatile int flag = 0;
+volatile int analogValue = 0;
 
 void init_ADC(void) {
     // initialize ADC
@@ -31,4 +35,35 @@ void init_ADC(void) {
     // setup conversion interrupts
     ADC14->IER0 |= ADC14_IER0_IE2;          // enable interrupts on mem[2]
     NVIC->ISER[0] = 1 << (ADC14_IRQn & 31); // enable ADC ISR in NVIC
+}
+
+void str_voltage(float voltage) {
+    float ones, tenth, hundredth = 0;
+    char volt_str[7] = "0.00 V";
+
+    ones = (int)(voltage);
+    tenth = (int)(10 * (voltage - ones));
+    hundredth = (int)(10 * ((voltage - ones) * 10 - tenth));
+
+    volt_str[0] += ones;  // ones digit
+    volt_str[2] += tenth; // tenth digit
+    volt_str[3] += hundredth; // hundredth digit
+
+    print_string(volt_str);
+}
+
+uint32_t get_flag_adc() {
+    return flag;
+}
+
+uint32_t get_voltage_adc() {
+    flag = 0;
+    analogValue = 0;
+
+    return analogValue;
+}
+
+void ADC14_IRQHandler(void) {
+    analogValue = ADC14->MEM[2];
+    flag = 1;
 }

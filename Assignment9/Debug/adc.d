@@ -17,6 +17,7 @@ adc.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/core_cm4.h
 adc.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_compiler.h
 adc.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h
 adc.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h
+adc.obj: ../uart.h
 
 ../adc.c: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/msp.h: 
@@ -35,3 +36,4 @@ adc.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_compiler.h: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h: 
+../uart.h: 
