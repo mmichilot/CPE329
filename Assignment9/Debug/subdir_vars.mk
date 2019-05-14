@@ -8,6 +8,7 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../adc.c \
+../delay.c \
 ../main.c \
 ../set_dco.c \
 ../startup_msp432p401r_ccs.c \
@@ -16,6 +17,7 @@ C_SRCS += \
 
 C_DEPS += \
 ./adc.d \
+./delay.d \
 ./main.d \
 ./set_dco.d \
 ./startup_msp432p401r_ccs.d \
@@ -24,6 +26,7 @@ C_DEPS += \
 
 OBJS += \
 ./adc.obj \
+./delay.obj \
 ./main.obj \
 ./set_dco.obj \
 ./startup_msp432p401r_ccs.obj \
@@ -32,6 +35,7 @@ OBJS += \
 
 OBJS__QUOTED += \
 "adc.obj" \
+"delay.obj" \
 "main.obj" \
 "set_dco.obj" \
 "startup_msp432p401r_ccs.obj" \
@@ -40,6 +44,7 @@ OBJS__QUOTED += \
 
 C_DEPS__QUOTED += \
 "adc.d" \
+"delay.d" \
 "main.d" \
 "set_dco.d" \
 "startup_msp432p401r_ccs.d" \
@@ -48,6 +53,7 @@ C_DEPS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../adc.c" \
+"../delay.c" \
 "../main.c" \
 "../set_dco.c" \
 "../startup_msp432p401r_ccs.c" \

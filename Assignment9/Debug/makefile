@@ -9,6 +9,7 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./adc.obj" \
+"./delay.obj" \
 "./main.obj" \
 "./set_dco.obj" \
 "./startup_msp432p401r_ccs.obj" \
@@ -157,8 +158,8 @@ Assignment9.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "adc.obj" "main.obj" "set_dco.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "uart.obj" 
-	-$(RM) "adc.d" "main.d" "set_dco.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "uart.d" 
+	-$(RM) "adc.obj" "delay.obj" "main.obj" "set_dco.obj" "startup_msp432p401r_ccs.obj" "system_msp432p401r.obj" "uart.obj" 
+	-$(RM) "adc.d" "delay.d" "main.d" "set_dco.d" "startup_msp432p401r_ccs.d" "system_msp432p401r.d" "uart.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

@@ -1,6 +1,7 @@
 # FIXED
 
 main.obj: ../main.c
+main.obj: /Users/celestine/Desktop/CPE//\ 329/CPE//\ 329//\ Assignments/Git329/CPE329/Project2/dac.h
 main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/msp.h
 main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/msp432p401r.h
 main.obj: /Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h
@@ -19,12 +20,13 @@ main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h
 main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h
 main.obj: ../set_dco.h
 main.obj: ../keypad.h
-main.obj: ../func_gen.h
 main.obj: ../func_gen_states.h
 main.obj: ../delay.h
 main.obj: ../LCD.h
+main.obj: ../gen_wave.h
 
 ../main.c: 
+/Users/celestine/Desktop/CPE//\ 329/CPE//\ 329//\ Assignments/Git329/CPE329/Project2/dac.h: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/msp.h: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/msp432p401r.h: 
 /Applications/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h: 
@@ -43,7 +45,7 @@ main.obj: ../LCD.h
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h: 
 ../set_dco.h: 
 ../keypad.h: 
-../func_gen.h: 
 ../func_gen_states.h: 
 ../delay.h: 
 ../LCD.h: 
+../gen_wave.h: 

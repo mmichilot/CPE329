@@ -1,8 +1,8 @@
 /*
  * ADC14.c
- *
- *  Created on: May 10, 2019
- *      Author: mmichilot
+ *      CPE 329-15
+ *      Assignment 9: Analog to Digital Converter
+ *      Author: Celestine Co & Matthew Michilot
  */
 
 #include "msp.h"

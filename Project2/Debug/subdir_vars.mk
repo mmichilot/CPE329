@@ -8,8 +8,8 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../LCD.c \
+../dac.c \
 ../delay.c \
-../func_gen.c \
 ../func_gen_states.c \
 ../gen_wave.c \
 ../keypad.c \
@@ -20,8 +20,8 @@ C_SRCS += \
 
 C_DEPS += \
 ./LCD.d \
+./dac.d \
 ./delay.d \
-./func_gen.d \
 ./func_gen_states.d \
 ./gen_wave.d \
 ./keypad.d \
@@ -32,8 +32,8 @@ C_DEPS += \
 
 OBJS += \
 ./LCD.obj \
+./dac.obj \
 ./delay.obj \
-./func_gen.obj \
 ./func_gen_states.obj \
 ./gen_wave.obj \
 ./keypad.obj \
@@ -44,8 +44,8 @@ OBJS += \
 
 OBJS__QUOTED += \
 "LCD.obj" \
+"dac.obj" \
 "delay.obj" \
-"func_gen.obj" \
 "func_gen_states.obj" \
 "gen_wave.obj" \
 "keypad.obj" \
@@ -56,8 +56,8 @@ OBJS__QUOTED += \
 
 C_DEPS__QUOTED += \
 "LCD.d" \
+"dac.d" \
 "delay.d" \
-"func_gen.d" \
 "func_gen_states.d" \
 "gen_wave.d" \
 "keypad.d" \
@@ -68,8 +68,8 @@ C_DEPS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../LCD.c" \
+"../dac.c" \
 "../delay.c" \
-"../func_gen.c" \
 "../func_gen_states.c" \
 "../gen_wave.c" \
 "../keypad.c" \

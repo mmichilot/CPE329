@@ -26,5 +26,6 @@ void set_DCO(int freq)
     CS->KEY = CS_KEY_VAL; //unlock CS
     CS->CTL0 = freq;
     CS->CTL1 |= CS_CTL1_DIVM__1 | CS_CTL1_SELM__DCOCLK; // set MCLK Source to DCO
+    CS->CTL1 |= CS_CTL1_DIVS__1 | CS_CTL1_SELS__DCOCLK; // set SMCLK Source to DCO
     CS->KEY = 0; // lock CS
 }

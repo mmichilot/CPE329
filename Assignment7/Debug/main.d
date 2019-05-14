@@ -17,8 +17,6 @@ main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/core_cm4.h
 main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_compiler.h
 main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h
 main.obj: /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h
-main.obj: ../set_dco.h
-main.obj: ../delay.h
 
 ../main.c: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/msp.h: 
@@ -37,5 +35,3 @@ main.obj: ../delay.h
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_compiler.h: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/CMSIS/cmsis_ccs.h: 
 /Applications/ti/ccs900/ccs/ccs_base/arm/include/system_msp432p401r.h: 
-../set_dco.h: 
-../delay.h: 
