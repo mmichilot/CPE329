@@ -1,8 +1,8 @@
 /*
  * uart.c
- *      CPE 329-15
- *      Assignment 9: Analog to Digital Converter
- *      Author: Celestine Co & Matthew Michilot
+ *    CPE 329-15
+ *    Project 3: Digital Multimeter
+ *    Author: Celestine Co & Matthew Michilot
  */
 
 #include "msp.h"

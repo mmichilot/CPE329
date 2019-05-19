@@ -1,7 +1,7 @@
 /*
  * set_dco.c
  *    CPE 329-15
- *    Assignment 5: Interrupts and Timers
+ *    Project 3: Digital Multimeter
  *    Author: Celestine Co & Matthew Michilot
  */
 

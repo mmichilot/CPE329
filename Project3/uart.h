@@ -1,8 +1,8 @@
 /*
  * uart.h
- *      CPE 329-15
- *      Assignment 8: UART Communication
- *      Author: Celestine Co & Matthew Michilot
+ *    CPE 329-15
+ *    Project 3: Digital Multimeter
+ *    Author: Celestine Co & Matthew Michilot
  */
 
 #ifndef UART_H_

@@ -1,8 +1,8 @@
 /*
  * ADC14.h
- *
- *  Created on: May 10, 2019
- *      Author: mmichilot
+ *    CPE 329-15
+ *    Project 3: Digital Multimeter
+ *    Author: Celestine Co & Matthew Michilot
  */
 
 #ifndef ADC_H_
