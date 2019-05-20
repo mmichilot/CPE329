@@ -12,7 +12,6 @@ typedef enum {
         GET_FREQ,
         GET_DC_VAL,
         UPD_TERM,
-        WAIT,
         GET_AC_VALS
 } dmm_state_type;
 

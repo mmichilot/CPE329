@@ -10,6 +10,7 @@
 #include "uart.h"
 #include "adc.h"
 #include "dmm.h"
+#include "terminal.h"
 #include "multimeter_states.h"
 
 void init_timer(void);
@@ -19,7 +20,11 @@ void main(void)
 	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
 
 	set_DCO(FREQ_48_MHz);
+	init_ADC();
 	init_timer();
+	init_UART();
+
+//	init_terminal();
 
 	__enable_irq();
 

@@ -21,6 +21,7 @@ void init_UART(void);
 void print_char(char letter);
 void print_string(char* string);
 void esc_seq(char* escSeq);
+void str_freq(int freq);
 
 uint32_t check_flag(void);
 uint32_t get_voltage(void);

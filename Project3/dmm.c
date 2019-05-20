@@ -10,64 +10,78 @@
 
 volatile uint32_t count = 0;
 volatile uint32_t num_trigs = 0;
-volatile uint32_t curr_freq = 0;
 volatile uint32_t flag = 0;
 
+/* Capture the current frequency */
 int get_freq(void) {
-    curr_freq = 0;
+    int curr_freq = 0;
+
+    flag = 0;
     count = 0;
     num_trigs = 0;
 
+    TIMER_A0->CCR[0] += 65535;                  // add 1s delay
+    TIMER_A0->CTL |= TIMER_A_CTL_CLR;           // clear current count
     TIMER_A0->CCTL[1] |= TIMER_A_CCTLN_CM_1;    // enable capture
-    TIMER_A0->CCR[0] += 48000;  // add 0.75s delay
     TIMER_A0->CCTL[0] |= TIMER_A_CCTLN_CCIE;    // enable CCR0 interrupt
-    TIMER_A0->CTL |= TIMER_A_CTL_CLR;   // clear current count
 
-    while(flag == 0);
+    while(flag == 0);   // wait for capture to happen
+
+    TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CM_1;   // disable capture
+
+    // calculate frequency if AC
+    if (num_trigs) {
+        curr_freq = (int) (64000/count);    // calculate freq
+         if (count >= 64000)                // edge case where freq. is 1
+            curr_freq++;
+    }
 
     return curr_freq;
 }
 
+/* This ISR handles a DC signal. If CCR0 times out after
+ * then set the frequency to 0;
+ */
 void TA0_0_IRQHandler(void) {
     TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIFG;  // clear interrupt flag
     TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIE;   // disable CCR0 interrupt
-    TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CM_1;   // disable capture if it isn't disabled
-
-    // calculate frequency if AC
-    if (count != 0) {
-        curr_freq = (int) (64000/count);    // calculate freq
-        if (count > 64000)      // edge case where freq. is 1
-            curr_freq++;
-    }
+    TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CM_1;   // disable capture
 
     flag = 1;
 }
 
+/* This ISR handles an AC signal. Using the capture mode on Timer A,
+ * it counts the period of the signal.
+ */
 void TA0_N_IRQHandler(void) {
     uint32_t tmp_count;
 
     if (TIMER_A0->CCTL[1] & TIMER_A_CCTLN_CCIFG) {
+        TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CCIFG;  // clear CCR1 interrupt flag
 
-        TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIE;   // temporarily disable CCR0 interrupts
-        TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CCIFG;  // clear interrupt flag
+        TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIE;   // disable CCR0 interrupts
+        TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIFG;  // clear CCR0 interrupt flag
+
         tmp_count = TIMER_A0->CCR[1];   // capture count
 
+        // calculate the count, and handle any count that wraps around
         if (count > tmp_count)
             count = count + (65535 - tmp_count);
         else
             count = tmp_count - count;
 
-        if (num_trigs == 2)
-            TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CM_1;   // disable capture
-        else {
+        // determine if it's the first rising edge
+        if (num_trigs)
+            flag = 1;
+        else
             num_trigs++;
-            TIMER_A0->CCR[0] += 48000;   // push back timer;
-        }
-
-        TIMER_A0->CCTL[0] |= TIMER_A_CCTLN_CCIE;   // re-enable CCR0 interrupts
     }
 }
 
+/* Initialize Timer A0 with CCR0 and CCR1
+ * CCR0 - DC signal
+ * CCR1 - AC signal
+ */
 void init_timer(void) {
     // Configure P2.4
     P2->SEL0 |= BIT4;
@@ -86,6 +100,8 @@ void init_timer(void) {
                          TIMER_A_CCTLN_CAP |    // capture on CCIxA
                          TIMER_A_CCTLN_CCIE |   // use capture mode
                          TIMER_A_CCTLN_SCS;     // synchronous capture
+
+    TIMER_A0->CCR[0] = 65535;
 
     NVIC->ISER[0] = 1 << (TA0_0_IRQn & 31); // enable CCR0 ISR
     NVIC->ISER[0] = 1 << (TA0_N_IRQn & 31); // enable CCR1 ISR

@@ -9,9 +9,14 @@
 #include "dmm.h"
 #include "delay.h"
 #include "msp.h"
+#include "uart.h"
+#include "adc.h"
 
 dmm_state_type current_dmm_state = GET_FREQ;
 dmm_state_type next_dmm_state;
+
+int frequency = 0;
+float dc_volt = 0;
 
 void dmm_fsm(void) {
     while(1) {
@@ -21,7 +26,6 @@ void dmm_fsm(void) {
 }
 
 void update_fsm(void) {
-    int frequency = 0;
 
     switch(current_dmm_state) {
     case GET_FREQ:
@@ -34,12 +38,18 @@ void update_fsm(void) {
 
     case GET_DC_VAL:
         // Get DC voltage
+        ADC14->CTL0 |= ADC14_CTL0_SC;   // start ADC sampling
+        while (get_flag_adc() == 0);    // wait for ADC to get voltage
+        dc_volt = (0.0002 * get_voltage_adc()) - 0.09;    // convert voltage to a readable value
         next_dmm_state = UPD_TERM;
         break;
 
     case UPD_TERM:
-        // Update Terminal
-        next_dmm_state = WAIT;
+        str_voltage(dc_volt);    // print voltage
+        str_freq(frequency);
+        next_dmm_state = GET_FREQ;
+        frequency = 0;
+        dc_volt = 0;
         break;
 
     case GET_AC_VALS:
@@ -47,13 +57,8 @@ void update_fsm(void) {
         next_dmm_state = UPD_TERM;
         break;
 
-    case WAIT:
-        delay_us(40000);    // delay
-        next_dmm_state = GET_FREQ;
-        break;
-
     default:
-        current_dmm_state = WAIT;
+        current_dmm_state = GET_FREQ;
         break;
     }
 

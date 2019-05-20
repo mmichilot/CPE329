@@ -30,7 +30,7 @@ void init_ADC(void) {
     P6->SEL0 |= BIT1;
     P6->SEL1 |= BIT1;
 
-    ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;  // enable ADC and sampling
+    ADC14->CTL0 |= ADC14_CTL0_ENC;  // enable ADC
 
     // setup conversion interrupts
     ADC14->IER0 |= ADC14_IER0_IE2;          // enable interrupts on mem[2]
