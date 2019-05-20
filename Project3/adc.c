@@ -12,13 +12,17 @@ static int flag = 0;
 static int analogValue = 0;
 
 void init_ADC(void) {
+    // initialize TA1
+    TIMER_A1->CTL |= TIMER_A_CTL_TASSEL_2;   // use SMCLK
+
+    TIMER_A1->CCTL[1] |= TIMER_A_CCTLN_CCIE;    // enable CCR1 interrupt
+    TIMER_A1->CCR[1] = 2400;
+
     // initialize ADC
     ADC14->CTL0 &= ~ADC14_CTL0_ENC; // disable ADC for configuration
 
-    ADC14->CTL0 = ADC14_CTL0_SHP    // sample pulse, use internal timer
-                | ADC14_CTL0_SHT0_2 // 16 clocks per sample
-                | ADC14_CTL0_SSEL_3 // select MCLK
-                | ADC14_CTL0_ON;    // turn on ADC14
+    ADC14->CTL0 = ADC14_CTL0_SHS_3  // use TA1.1
+                | ADC14_CTL0_SSEL_3; // select MCLK
 
     ADC14->CTL1 = (2 << ADC14_CTL1_CSTARTADD_OFS)  // start conversion using mem[2]
                 | ADC14_CTL1_RES_3;                // use 14-bit conversion
@@ -59,7 +63,18 @@ uint32_t get_flag_adc() {
 }
 
 uint32_t get_voltage_adc() {
-    int voltageVal = analogValue;
+    int voltageVal;
+
+    TIMER_A1->CCR[0] = 2400;
+    ADC14->CTL0 |= ADC14_CTL0_ON;   // turn on ADC
+
+    TIMER_A1->CTL |= TIMER_A_CTL_MC_2   // continuous mode
+                   | TIMER_A_CTL_CLR;   // clear current count
+
+    while(flag == 0);   // wait for conversion to finish
+
+    ADC14->CTL0 &= ~ADC14_CTL0_ON;  // turn off ADC
+    voltageVal = analogValue;
 
     //reset flag and voltage
     flag = 0;
@@ -70,5 +85,6 @@ uint32_t get_voltage_adc() {
 
 void ADC14_IRQHandler(void) {
     analogValue = ADC14->MEM[2];
+    TIMER_A1->CTL |= TIMER_A_CTL_MC_0;  // halt timer
     flag = 1;
 }
