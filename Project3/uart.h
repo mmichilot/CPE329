@@ -8,6 +8,8 @@
 #ifndef UART_H_
 #define UART_H_
 
+#include "msp.h"
+
 #define DIV_1 0x01
 #define ASCII_OFS 0x30
 
