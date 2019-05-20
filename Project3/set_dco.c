@@ -25,7 +25,8 @@ void set_DCO(int freq)
 
     CS->KEY = CS_KEY_VAL; //unlock CS
     CS->CTL0 = freq;
+    CS->CLKEN |= CS_CLKEN_REFOFSEL; // set REFOCLK to 128 kHz
     CS->CTL1 |= CS_CTL1_DIVM__1 | CS_CTL1_SELM__DCOCLK; // set MCLK Source to DCO
-    CS->CTL1 |= CS_CTL1_DIVS__1 | CS_CTL1_SELS__DCOCLK; // set SMCLK Source to DCO
+    CS->CTL1 |= CS_CTL1_DIVA__1 | CS_CTL1_SELA__REFOCLK; // set ACLK Source to REFOCLK
     CS->KEY = 0; // lock CS
 }
