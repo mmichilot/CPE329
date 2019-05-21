@@ -8,7 +8,7 @@
 #ifndef DMM_H_
 #define DMM_H_
 
-#define FREQ_DIV 6400
+#define FREQ_DIV 64000
 #define SEC_DELAY 65535
 #define COUNT_UPP_BND 65535
 
