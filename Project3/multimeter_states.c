@@ -38,7 +38,6 @@ void update_fsm(void) {
 
     case GET_DC_VAL:
         // Get DC voltage
-        ADC14->CTL0 |= ADC14_CTL0_SC;   // start ADC sampling
         dc_volt = (0.0002 * get_voltage_adc()) - 0.09;    // convert voltage to a readable value
         next_dmm_state = UPD_TERM;
         break;
@@ -53,6 +52,7 @@ void update_fsm(void) {
 
     case GET_AC_VALS:
         // Get AC Vrms and Vpp
+        dc_volt = (0.0002 * get_voltage_adc()) - 0.09;    // convert voltage to a readable value
         next_dmm_state = UPD_TERM;
         break;
 

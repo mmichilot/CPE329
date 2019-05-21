@@ -7,10 +7,15 @@
 
 #include "dmm.h"
 #include "msp.h"
+#include "dmm.h"
 
 volatile uint32_t count = 0;
 volatile uint32_t num_trigs = 0;
 volatile uint32_t flag = 0;
+
+volatile uint32_t last_tmp_count = 0;
+volatile uint32_t timeout_flag = 0;
+volatile uint32_t last_count = 0;
 
 /* Capture the current frequency */
 int get_freq(void) {
@@ -20,21 +25,24 @@ int get_freq(void) {
     count = 0;
     num_trigs = 0;
 
-    TIMER_A0->CCR[0] += 65535;                  // add 1s delay
-    TIMER_A0->CTL |= TIMER_A_CTL_CLR;           // clear current count
-    TIMER_A0->CCTL[1] |= TIMER_A_CCTLN_CM_1;    // enable capture
+    TIMER_A0->CCR[0] = SEC_DELAY;                   // add 1s delay
     TIMER_A0->CCTL[0] |= TIMER_A_CCTLN_CCIE;    // enable CCR0 interrupt
+
+    TIMER_A0->CCTL[1] |= TIMER_A_CCTLN_CM_1;    // enable capture
 
     while(flag == 0);   // wait for capture to happen
 
     TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CM_1;   // disable capture
 
     // calculate frequency if AC
-    if (num_trigs) {
-        curr_freq = (int) (64000/count);    // calculate freq
-         if (count >= 64000)                // edge case where freq. is 1
-            curr_freq++;
+    if (num_trigs && (count != 1)) {        // on rare occasions count=1 so the frequency was 64000
+        curr_freq = (int) (FREQ_DIV/count);    // calculate freq
+         if (count > FREQ_DIV)                // edge case where freq. is 1
+             curr_freq++;
     }
+
+    if (curr_freq == FREQ_DIV)
+        TIMER_A0->CTL |= TIMER_A_CTL_CLR;
 
     return curr_freq;
 }
@@ -48,6 +56,7 @@ void TA0_0_IRQHandler(void) {
     TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CM_1;   // disable capture
 
     flag = 1;
+    timeout_flag = 1;
 }
 
 /* This ISR handles an AC signal. Using the capture mode on Timer A,
@@ -59,16 +68,16 @@ void TA0_N_IRQHandler(void) {
     if (TIMER_A0->CCTL[1] & TIMER_A_CCTLN_CCIFG) {
         TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CCIFG;  // clear CCR1 interrupt flag
 
-        TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIE;   // disable CCR0 interrupts
-        TIMER_A0->CCTL[0] &= ~TIMER_A_CCTLN_CCIFG;  // clear CCR0 interrupt flag
-
         tmp_count = TIMER_A0->CCR[1];   // capture count
 
+        last_count = count;
+        last_tmp_count = tmp_count;
+
         // calculate the count, and handle any count that wraps around
-        if (count > tmp_count)
-            count = count + (65535 - tmp_count);
-        else
+        if (count < tmp_count)
             count = tmp_count - count;
+        else
+            count = count + (COUNT_UPP_BND - tmp_count);
 
         // determine if it's the first rising edge
         if (num_trigs)

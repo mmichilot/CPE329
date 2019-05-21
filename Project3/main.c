@@ -10,7 +10,7 @@
 #include "uart.h"
 #include "adc.h"
 #include "dmm.h"
-#include "terminal.h"
+//#include "terminal.h"
 #include "multimeter_states.h"
 
 void init_timer(void);
