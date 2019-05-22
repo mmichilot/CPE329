@@ -11,9 +11,6 @@
 #define DC_SAMPL_RATE 24
 
 void init_ADC(void);
-void str_dc_voltage(float voltage);
-void str_ac_pp_voltage(float voltage);
-void str_ac_rms_voltage(float voltage);
 uint32_t get_flag_adc();
 uint32_t get_dc_voltage_adc(int frequency);
 uint32_t get_ac_pp_voltage_adc(void);

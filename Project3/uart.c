@@ -8,10 +8,11 @@
 #include "msp.h"
 #include "uart.h"
 #include "string.h"
-#include "stdio.h"
 
 static uint32_t flag = 0;
 static uint32_t voltage = 0;
+
+void int_to_str(int num, char* str);
 
 void init_UART(void) {
 
@@ -52,19 +53,6 @@ void print_string(char* string) {
         print_char(string[i]);
 }
 
-void esc_seq(char* escSeq) {
-    print_char(ESC_SEQ);
-    print_char('[');
-    print_string(escSeq);
-}
-
-//void move_cursor(int row, int col) {
-//    print_char(ESC_SEQ);
-//    print_char('[');
-//    print_char(i+0x30);
-//    print_char(';')
-//}
-
 uint32_t check_flag(void) {
     return flag;
 }
@@ -80,7 +68,7 @@ uint32_t get_voltage(void) {
 }
 
 void EUSCIA0_IRQHandler(void) {
-    uint8_t input;
+    int input;
 
     if (EUSCI_A0->IFG & EUSCI_A_IFG_RXIFG) {
 
@@ -102,15 +90,5 @@ void EUSCIA0_IRQHandler(void) {
                 voltage = (voltage*10) + input;
         }
     }
-}
-
-void str_freq(int freq) {
-    char freq_str[8];
-
-    sprintf(freq_str, "%d Hz", freq);
-    print_string(freq_str);
-    print_char('\n');
-    print_char('\r');
-
 }
 

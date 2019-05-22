@@ -13,15 +13,9 @@
 #define DIV_1 0x01
 #define ASCII_OFS 0x30
 
-// VT100 Escape Sequences
-#define ESC_SEQ 0x1B
-#define BLINK_CURSOR "5m"
-
 void init_UART(void);
 void print_char(char letter);
 void print_string(char* string);
-void esc_seq(char* escSeq);
-void str_freq(int freq);
 
 uint32_t check_flag(void);
 uint32_t get_voltage(void);

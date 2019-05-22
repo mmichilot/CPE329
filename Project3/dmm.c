@@ -13,10 +13,6 @@ volatile uint32_t count = 0;
 volatile uint32_t num_trigs = 0;
 volatile uint32_t flag = 0;
 
-volatile uint32_t last_tmp_count = 0;
-volatile uint32_t timeout_flag = 0;
-volatile uint32_t last_count = 0;
-
 /* Capture the current frequency */
 int get_freq(void) {
     int curr_freq = 0;
@@ -25,9 +21,14 @@ int get_freq(void) {
     count = 0;
     num_trigs = 0;
 
-    TIMER_A0->CCR[0] = SEC_DELAY;                   // add 1s delay
+    // Timer A0 setup to capture frequency
+    TIMER_A0->CTL |= TIMER_A_CTL_MC_0   // keep timer halted
+                   | TIMER_A_CTL_CLR;   // clear timer count
+
+    TIMER_A0->CCR[0] = SEC_DELAY;               // add 1s delay
     TIMER_A0->CCTL[0] |= TIMER_A_CCTLN_CCIE;    // enable CCR0 interrupt
 
+    TIMER_A0->CTL |= TIMER_A_CTL_MC_2;           // enable timer
     TIMER_A0->CCTL[1] |= TIMER_A_CCTLN_CM_1;    // enable capture
 
     while(flag == 0);   // wait for capture to happen
@@ -47,7 +48,7 @@ int get_freq(void) {
     return curr_freq;
 }
 
-/* This ISR handles a DC signal. If CCR0 times out after
+/* This ISR handles a DC signal. If CCR0 times out after 1s
  * then set the frequency to 0;
  */
 void TA0_0_IRQHandler(void) {
@@ -56,7 +57,6 @@ void TA0_0_IRQHandler(void) {
     TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CM_1;   // disable capture
 
     flag = 1;
-    timeout_flag = 1;
 }
 
 /* This ISR handles an AC signal. Using the capture mode on Timer A,
@@ -69,9 +69,6 @@ void TA0_N_IRQHandler(void) {
         TIMER_A0->CCTL[1] &= ~TIMER_A_CCTLN_CCIFG;  // clear CCR1 interrupt flag
 
         tmp_count = TIMER_A0->CCR[1];   // capture count
-
-        last_count = count;
-        last_tmp_count = tmp_count;
 
         // calculate the count, and handle any count that wraps around
         if (count < tmp_count)
@@ -92,7 +89,8 @@ void TA0_N_IRQHandler(void) {
  * CCR1 - AC signal
  */
 void init_timer(void) {
-    // Configure P2.4
+
+    // Configure P2.4 as CCR1 capture input
     P2->SEL0 |= BIT4;
     P2->SEL1 &= ~BIT4;
     P2->DIR &= ~BIT4;
@@ -102,7 +100,7 @@ void init_timer(void) {
     // Configure TimerA0
     TIMER_A0->CTL |= TIMER_A_CTL_TASSEL_1 |     // use ACLK
                      TIMER_A_CTL_ID_1 |         // divide ACLK by 2
-                     TIMER_A_CTL_MC_2;          // continuous mode
+                     TIMER_A_CTL_MC_0;          // stop mode
 
     // CCR1 -> Capture Frequency
     TIMER_A0->CCTL[1] |= TIMER_A_CCTLN_CM_1 |   // capture on rising edge
@@ -114,4 +112,13 @@ void init_timer(void) {
 
     NVIC->ISER[0] = 1 << (TA0_0_IRQn & 31); // enable CCR0 ISR
     NVIC->ISER[0] = 1 << (TA0_N_IRQn & 31); // enable CCR1 ISR
+
+    // initialize TimerA1
+    TIMER_A1->CTL |= TIMER_A_CTL_TASSEL_2   // use SMCLK
+                   | TIMER_A_CTL_MC_0;      // stop mode
+
+    TIMER_A1->CCTL[0] |= TIMER_A_CCTLN_CCIE;    // enable CCR0 interrupt
+
+    NVIC->ISER[0] = 1 << (TA1_0_IRQn & 31); // enable CCR0 TIMER A1 ISR
+
 }
