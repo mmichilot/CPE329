@@ -21,14 +21,8 @@ int get_freq(void) {
     count = 0;
     num_trigs = 0;
 
-    // Timer A0 setup to capture frequency
-    TIMER_A0->CTL |= TIMER_A_CTL_MC_0   // keep timer halted
-                   | TIMER_A_CTL_CLR;   // clear timer count
-
-    TIMER_A0->CCR[0] = SEC_DELAY;               // add 1s delay
+    TIMER_A0->CCR[0] = SEC_DELAY;       // add 1s delay
     TIMER_A0->CCTL[0] |= TIMER_A_CCTLN_CCIE;    // enable CCR0 interrupt
-
-    TIMER_A0->CTL |= TIMER_A_CTL_MC_2;           // enable timer
     TIMER_A0->CCTL[1] |= TIMER_A_CCTLN_CM_1;    // enable capture
 
     while(flag == 0);   // wait for capture to happen
@@ -41,9 +35,6 @@ int get_freq(void) {
          if (count > FREQ_DIV)                // edge case where freq. is 1
              curr_freq++;
     }
-
-    if (curr_freq == FREQ_DIV)
-        TIMER_A0->CTL |= TIMER_A_CTL_CLR;
 
     return curr_freq;
 }
@@ -100,25 +91,24 @@ void init_timer(void) {
     // Configure TimerA0
     TIMER_A0->CTL |= TIMER_A_CTL_TASSEL_1 |     // use ACLK
                      TIMER_A_CTL_ID_1 |         // divide ACLK by 2
-                     TIMER_A_CTL_MC_0;          // stop mode
+                     TIMER_A_CTL_MC_2;          // continuous mode
+
+    TIMER_A0->CCR[0] = SEC_DELAY;
 
     // CCR1 -> Capture Frequency
-    TIMER_A0->CCTL[1] |= TIMER_A_CCTLN_CM_1 |   // capture on rising edge
+    TIMER_A0->CCTL[1] |= TIMER_A_CCTLN_CM_1 |   // enable capturing on rising edge
                          TIMER_A_CCTLN_CAP |    // capture on CCIxA
                          TIMER_A_CCTLN_CCIE |   // use capture mode
                          TIMER_A_CCTLN_SCS;     // synchronous capture
-
-    TIMER_A0->CCR[0] = 65535;
 
     NVIC->ISER[0] = 1 << (TA0_0_IRQn & 31); // enable CCR0 ISR
     NVIC->ISER[0] = 1 << (TA0_N_IRQn & 31); // enable CCR1 ISR
 
     // initialize TimerA1
     TIMER_A1->CTL |= TIMER_A_CTL_TASSEL_2   // use SMCLK
-                   | TIMER_A_CTL_MC_0;      // stop mode
+                   | TIMER_A_CTL_ID_1       // divide SMCLK by 2
+                   | TIMER_A_CTL_MC_2;      // continuous mode
 
-    TIMER_A1->CCTL[0] |= TIMER_A_CCTLN_CCIE;    // enable CCR0 interrupt
-
-    NVIC->ISER[0] = 1 << (TA1_0_IRQn & 31); // enable CCR0 TIMER A1 ISR
+    NVIC->ISER[0] = 1 << (TA1_0_IRQn & 31); // enable CCR0 ISR
 
 }

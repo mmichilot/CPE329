@@ -14,5 +14,6 @@ void init_ADC(void);
 uint32_t get_flag_adc();
 uint32_t get_dc_voltage_adc(int frequency);
 uint32_t get_ac_pp_voltage_adc(void);
+float find_rms(void);
 
 #endif /* ADC_H_ */

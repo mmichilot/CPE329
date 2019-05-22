@@ -17,8 +17,9 @@ dmm_state_type current_dmm_state = GET_FREQ;
 dmm_state_type next_dmm_state;
 
 int frequency = 0;
-float dc_volt = 0;
-float ac_pp_volt = 0;
+float vdc = 0;
+float vpp = 0;
+float vrms = 0;
 
 void dmm_fsm(void) {
     while(1) {
@@ -40,22 +41,24 @@ void update_fsm(void) {
 
     case GET_DC_VAL:
         // Get DC voltage
-        dc_volt = (0.0002 * get_dc_voltage_adc(frequency));    // convert voltage to a readable value
+        vdc = (0.0002 * get_dc_voltage_adc(frequency)) + 0.01;    // convert voltage to a readable value
         next_dmm_state = UPD_TERM;
         break;
 
     case UPD_TERM:
-        update_terminal(frequency, dc_volt, ac_pp_volt, 0);
+        update_terminal(frequency, vdc, vpp, vrms);
         next_dmm_state = GET_FREQ;
         frequency = 0;
-        dc_volt = 0;
-        ac_pp_volt = 0;
+        vdc = 0;
+        vpp = 0;
+        vrms = 0;
         break;
 
     case GET_AC_VALS:
         // Get AC Vrms and Vpp
-        dc_volt = (0.0002 * get_dc_voltage_adc(frequency));    // convert voltage to a readable value
-        ac_pp_volt = (0.0002 * get_ac_pp_voltage_adc());
+        vdc = (0.0002 * get_dc_voltage_adc(frequency)) + 0.03;    // convert voltage to a readable value
+        vpp = (0.0002 * get_ac_pp_voltage_adc()) - 0.04;
+        vrms = (find_rms() * 0.0002) - 0.02;
         next_dmm_state = UPD_TERM;
         break;
 

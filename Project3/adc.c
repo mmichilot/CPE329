@@ -7,22 +7,27 @@
 
 #include "msp.h"
 #include "adc.h"
+#include "math.h"
 
-static int flag = 0;
-static int conv_flag = 0;
-static int analogValue = 0;
+#define PI 3.14
 
-volatile int sample_rate = DC_SAMPL_RATE;
-volatile int num_samples = 0;
+volatile static int flag = 0;
+
+volatile int num_samples = 256;
 volatile int curr_sample = 0;
 
 volatile uint32_t offset = 0;
 
 volatile int dc_mode = 1;
-volatile int max_voltage = 0;
-volatile int min_voltage = 4096;
+volatile int dc_voltage = 0;
 
-volatile static int samples[512];
+static int sample_rate = 0;
+
+volatile static int samples[256];
+
+int average_samples(void);
+int find_max(void);
+float find_rms(void);
 
 void init_ADC(void) {
     // initialize ADC
@@ -55,81 +60,102 @@ uint32_t get_flag_adc() {
 }
 
 uint32_t get_dc_voltage_adc(int frequency) {
-    int voltageVal;
 
-    TIMER_A1->CTL |= TIMER_A_CTL_MC_0   // stop Timer A1
-                   | TIMER_A_CTL_CLR;   // clear Timer A1 count
+    sample_rate = 0;
+    dc_voltage = 0;
+    offset = 0;
+    flag = 0;
 
     if (frequency == 0) { // DC
         dc_mode = 1;
-        sample_rate = DC_SAMPL_RATE;
+        ADC14->CTL0 |= ADC14_CTL0_SC;
+
     } else {   // AC
         dc_mode = 0;
-        num_samples = (int)(64000 * 64 /frequency);
-        sample_rate = DC_SAMPL_RATE;
-        max_voltage = 0;
-        min_voltage = 16383;
+        sample_rate = ((1/((float)frequency*256)) * 24000000) + 1;
         curr_sample = 0;
+        TIMER_A1->CCR[0] = sample_rate;
+        TIMER_A1->CCTL[0] |= TIMER_A_CCTLN_CCIE;   // enable CCR0 interrupt
     }
-
-    conv_flag = 1;
-
-    TIMER_A1->CCR[1] = sample_rate;
-    TIMER_A1->CCTL[1] |= TIMER_A_CCTLN_CCIE;   // enable CCR0 interrupt
-    TIMER_A1->CTL |= TIMER_A_CTL_MC_2;    // re-enable Timer A1
 
     while(flag == 0);   // wait for conversion to finish
 
-    voltageVal = analogValue;
-
-    //reset flag and voltage
-    flag = 0;
-    analogValue = 0;
-
-
     if (dc_mode)
-        return voltageVal;  // DC value
+        return dc_voltage;  // DC value
     else
-        offset = (min_voltage + max_voltage) / 2; // DC offset for AC voltage
-    return offset;
+        return (offset = average_samples()); // DC offset for AC voltage
 }
 
 uint32_t get_ac_pp_voltage_adc(void) {
-    return max_voltage - min_voltage;
+    return (find_max() - offset) * 2;
 }
 
+
 void TA1_0_IRQHandler(void) {
-    TIMER_A1->CCTL[1] &= ~TIMER_A_CCTLN_CCIFG;  // clear interrupt flag
+    TIMER_A1->CCTL[0] &= ~TIMER_A_CCTLN_CCIFG;  // clear interrupt flag
 
-    TIMER_A1->CCR[1] += sample_rate;
-
-    if (conv_flag == 1) {
-        ADC14->CTL0 |=  ADC14_CTL0_SC;   // enable and start conversion
-        conv_flag = 0;
-        TIMER_A1->CCTL[1] &= ~TIMER_A_CCTLN_CCIE;   // disable CCR0 interrupt
+    // check if we have enough samples
+    if (curr_sample == num_samples) {
+        ADC14->CTL0 &= ~ADC14_CTL0_ON; // disable ADC
+        TIMER_A1->CCTL[0] &= ~TIMER_A_CCTLN_CCIE;   // disable CCR1 interrupts
+        flag = 1;
     }
+    else
+        ADC14->CTL0 |= ADC14_CTL0_SC;   // enable and start conversion
+
+    TIMER_A1->CCR[0] += sample_rate;
 }
 
 void ADC14_IRQHandler(void) {
-    analogValue = ADC14->MEM[2];
-
-    if (analogValue > max_voltage)
-        max_voltage = analogValue;
-    if (analogValue < min_voltage)
-        min_voltage = analogValue;
-
     if (dc_mode) {
+        dc_voltage = ADC14->MEM[2];
         ADC14->CTL0 &= ~ADC14_CTL0_ON; // disable ADC
         flag = 1;
-    }  else {
+    }
+    else {
+        samples[curr_sample] = ADC14->MEM[2];
         curr_sample++;
     }
+}
 
-    if (curr_sample == num_samples) {
-        ADC14->CTL0 &= ~ADC14_CTL0_ON; // disable ADC
-        flag = 1;
+int average_samples(void) {
+    int i;
+    int total = 0;
 
-    } else {
-        ADC14->CTL0 |= ADC14_CTL0_SC;   // enable and start conversion
+    for (i = 0; i < 256; i++) {
+        total += (samples[i] >> 8);
     }
+
+    return total;
+}
+
+int find_max(void) {
+    int i;
+    int max = offset;
+
+    for (i = 0; i < 256; i++)
+        max = (samples[i] > max) ? samples[i] : max;
+
+    return max;
+}
+
+float find_rms(void) {
+    int i = 0;
+    int num_vals = 0;
+    uint32_t total = 0;
+    uint32_t voltage = 0;
+
+    // wait till we get the upper half of the waveform
+    while (samples[i] < offset)
+        i++;
+
+    for (i = i; num_vals < 128; i++) {
+        if (i > 255)
+            i = 0;
+        voltage = samples[i] - offset;
+        total +=  (voltage * voltage) >> 7;
+        num_vals++;
+    }
+
+    return 2*sqrt(total);
 }
