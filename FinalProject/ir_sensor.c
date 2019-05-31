@@ -52,12 +52,15 @@ void init_IR(void) {
     NVIC->ISER[0] = 1 << (ADC14_IRQn & 31); // enable ADC ISR in NVIC
 }
 
+uint32_t get_analog_val(void) {
+    return analog_val;
+}
+
 
 
 void ADC14_IRQHandler(void) {
     if (ADC14->IFGR1 & ADC14_IFGR1_HIIFG) {
         ADC14->CLRIFGR1 |= ADC14_CLRIFGR1_CLRHIIFG; // clear interrupt flag
         analog_val = ADC14->MEM[1];  // grab value
-        P3->OUT ^= BIT0;
     }
 }

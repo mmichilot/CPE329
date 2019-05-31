@@ -1,22 +1,37 @@
-#include "msp.h"
-#include "ir_sensor.h"
-#include <stdint.h>
-
 /**
  * main.c
+ *    CPE 329-15
+ *    Final Project: IR Theremin
+ *    Author: Celestine Co & Matthew Michilot
  */
+
+#include "msp.h"
+#include "ir_sensor.h"
+#include "lcd.h"
+#include "note.h"
+
+
 
 void main(void)
 {
+    Note curr_note = C;
+
 	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
 
-	P3->SEL0 &= ~BIT0;
-	P3->SEL1 &= ~BIT0;
-	P3->DIR |= BIT0;
-
 	init_IR();
+	init_LCD();
 	__enable_irq();
 
-	while(1);
+	write_string("Note: ");
+	print_note(curr_note);
+
+	while(1) {
+
+	    // only update note if it changes
+	    if (curr_note != get_note()) {
+	        curr_note = get_note();
+	        print_note(curr_note);
+	    }
+	}
 
 }

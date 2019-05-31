@@ -13,6 +13,7 @@
 #define HI_THRESHOLD 1500
 
 void init_IR(void);
+uint32_t get_analog_val(void);
 
 
 #endif /* IR_SENSOR_H_ */
