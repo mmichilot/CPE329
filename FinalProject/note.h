@@ -11,6 +11,8 @@
 typedef enum {A, B, C, D, E, F, G} Note;
 
 void print_note(Note curr_note);
-Note get_note(void);
+void print_vol(uint32_t curr_vol);
+Note get_note(Note curr_note);
+uint32_t get_vol(uint32_t curr_vol);
 
 #endif /* NOTE_H_ */
