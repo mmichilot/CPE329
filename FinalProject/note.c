@@ -6,7 +6,7 @@
  */
 
 #include "stdint.h"
-
+#include "msp.h"
 #include "ir_sensor.h"
 #include "lcd.h"
 #include "note.h"
@@ -65,4 +65,9 @@ uint32_t get_vol(uint32_t curr_vol) {
         return 7;
     else
         return curr_vol;
+}
+
+void adjust_note(Note curr_note) {
+    TIMER_A2->CCR[0] = notes_LUT[curr_note];   // reset
+    TIMER_A2->CCR[1] = (notes_LUT[curr_note] >> 1);   // toggle
 }
