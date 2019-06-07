@@ -1,8 +1,8 @@
 /*
  * note.h
- *
- *  Created on: May 31, 2019
- *      Author: mmichilot
+ *    CPE 329-15
+ *    Final Project: IR Theremin
+ *    Author: Celestine Co & Matthew Michilot
  */
 
 #ifndef NOTE_H_
@@ -17,9 +17,18 @@
 #define A_FREQ 1881 // 400.00 Hz
 #define B_FREQ 1523 // 493.88 Hz
 
+#define CHIP_SEL BIT0
+#define LOWER_MASK 0xFF
+#define UPPER_MASK 0x0F
+#define DATA_OFS 8
+
 typedef enum {A, B, C, D, E, F, G} Note;
 static const uint16_t notes_LUT[7] = {
    A_FREQ, B_FREQ, C_FREQ, D_FREQ, E_FREQ, F_FREQ, G_FREQ
+};
+
+static const uint16_t vol_LUT[8] = {
+   0, 1695, 2095, 2495, 2895, 3295, 3695, 4095
 };
 
 void print_note(Note curr_note);
@@ -27,5 +36,6 @@ void print_vol(uint32_t curr_vol);
 Note get_note(Note curr_note);
 uint32_t get_vol(uint32_t curr_vol);
 void adjust_note(Note curr_note);
+void adjust_vol(uint32_t curr_vol);
 
 #endif /* NOTE_H_ */

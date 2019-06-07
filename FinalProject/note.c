@@ -1,8 +1,8 @@
 /*
  * note.c
- *
- *  Created on: May 31, 2019
- *      Author: mmichilot
+ *    CPE 329-15
+ *    Final Project: IR Theremin
+ *    Author: Celestine Co & Matthew Michilot
  */
 
 #include "stdint.h"
@@ -10,6 +10,9 @@
 #include "ir_sensor.h"
 #include "lcd.h"
 #include "note.h"
+
+volatile int vol_flag = 0;
+volatile uint32_t volume = 0;
 
 void print_note(Note curr_note) {
     set_addr(0x06);
@@ -70,4 +73,23 @@ uint32_t get_vol(uint32_t curr_vol) {
 void adjust_note(Note curr_note) {
     TIMER_A2->CCR[0] = notes_LUT[curr_note];   // reset
     TIMER_A2->CCR[1] = (notes_LUT[curr_note] >> 1);   // toggle
+}
+
+void adjust_vol(uint32_t curr_vol) {
+    int loByte, hiByte;
+
+    volume = vol_LUT[curr_vol];
+
+    loByte = volume & LOWER_MASK;                      // mask lower 8 bits
+    hiByte = (volume >> DATA_OFS) & UPPER_MASK;               // mask upper 4 bits
+    hiByte |= BIT4 | BIT5;                                     // set shutdown bit to 1
+    while(!(EUSCI_B0->IFG & EUSCI_B_IFG_TXIFG));    // wait for TX buffer to empty
+
+    // Beginning of transmission
+    P1->OUT &= ~CHIP_SEL;                           // set CS low
+    EUSCI_B0->TXBUF = hiByte;                       // send lower 8 bits
+    while(!(EUSCI_B0->IFG & EUSCI_B_IFG_TXIFG));    // wait for TX buffer to empty
+    EUSCI_B0->TXBUF = loByte;                       // send upper 8 bits;
+    while(!(EUSCI_B0->IFG & EUSCI_B_IFG_RXIFG));    // wait for transmit to finish
+    P1->OUT |= CHIP_SEL;                            // set CS high
 }

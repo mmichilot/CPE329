@@ -1,11 +1,11 @@
 /*
  * func_gen.c
  *    CPE 329-15
- *    Project 2: Function Generator
+ *    Final Project: IR Theremin
  *    Author: Celestine Co & Matthew Michilot
  */
 
-#include <dac.h>
+#include "dac.h"
 #include "msp.h"
 #include "note.h"
 
@@ -25,7 +25,7 @@ void init_DAC(void) {
     P1->SEL0 |= (BIT5|BIT6);                    // configure for SMLCLK and SIMO
     P1->SEL1 &= ~(BIT5|BIT6);                   // for EUSCI_B0
     P1->DIR |= BIT0;                            // set P1.0 for CS
-    P1->OUT |= CHIP_SEL;                            // initialize CS high
+    P1->OUT |= CHIP_SEL;                        // initialize CS high
 
     EUSCI_B0->CTLW0 &= ~EUSCI_B_CTLW0_SWRST;    // activate SPI
 
@@ -63,4 +63,3 @@ void set_voltage(int voltage) {
     while(!(EUSCI_B0->IFG & EUSCI_B_IFG_RXIFG));    // wait for transmit to finish
     P1->OUT |= CHIP_SEL;                            // set CS high
 }
-

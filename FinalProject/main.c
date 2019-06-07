@@ -51,6 +51,7 @@ void main(void)
 	    // only update vol if it changes
 	    if (curr_vol != (tmp_vol = get_vol(curr_vol))) {
 	        curr_vol = tmp_vol;
+	        adjust_vol(curr_vol);
 	        print_vol(curr_vol);
 	    }
 	}
