@@ -8,6 +8,8 @@
 #ifndef NOTE_H_
 #define NOTE_H_
 
+#define C_FREQ 261
+
 typedef enum {A, B, C, D, E, F, G} Note;
 
 void print_note(Note curr_note);

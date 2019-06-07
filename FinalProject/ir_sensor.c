@@ -17,11 +17,6 @@ void init_IR(void) {
     P6->SEL0 |= (BIT0|BIT1);
     P6->SEL1 |= (BIT0|BIT1);
 
-    // Bring out Timer A0 CCR1
-    P2->SEL0 |= BIT4;
-    P2->SEL1 &= ~BIT4;
-    P2->DIR |= BIT4;
-
     // Initialize Timer A0 CCR1 as PWM
 
     TIMER_A0->CCR[0] = PERIOD_75MS;
