@@ -1,8 +1,8 @@
 /*
  * ir_sensor.c
- *
- *  Created on: May 30, 2019
- *      Author: mmichilot
+ *    CPE 329-15
+ *    Final Project: IR Theremin
+ *    Author: Celestine Co & Matthew Michilot
  */
 
 #include "msp.h"

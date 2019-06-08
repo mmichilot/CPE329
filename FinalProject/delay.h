@@ -1,7 +1,7 @@
 /*
  * delay.h
  *    CPE 329-15
- *    Project 3: Digital Multimeter
+ *    Final Project: IR Theremin
  *    Author: Celestine Co & Matthew Michilot
  */
 
